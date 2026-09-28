@@ -166,74 +166,83 @@ export const HOMEWORK: HomeworkDef[] = [
 
 /* ---------- Opdrachten (huiswerk maken) ---------- */
 
-export type Question = { vraag: string; opties: string[]; juist: number; tekst?: string };
+export type Question = { vraag: string; tekst?: string; uitleg?: string } & (
+  | { opties: string[]; juist: number; open?: undefined }
+  | { open: true; antwoorden: string[]; hint?: string }
+);
 
 export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> = {
   "wi-opdr": {
-    intro: "Vijf korte rekensommen. Neem je tijd en reken het rustig uit.",
+    intro:
+      "Wiskunde brugklas — hoofdstuk Getallen & Verbanden. Typ je antwoord zelf in (geen rekenmachine!). Kommagetallen mag je met een komma of punt schrijven.",
     vragen: [
-      { vraag: "7 × 8 = ?", opties: ["54", "56", "58"], juist: 1 },
-      { vraag: "144 : 12 = ?", opties: ["11", "12", "14"], juist: 1 },
-      { vraag: "Hoeveel is 25% van 80?", opties: ["16", "20", "25"], juist: 1 },
-      { vraag: "3² + 4² = ?", opties: ["25", "24", "49"], juist: 0 },
-      { vraag: "Los op: 5x = 45. Wat is x?", opties: ["8", "9", "10"], juist: 1 },
+      { vraag: "Bereken: 3 + 4 × 5 − 2", open: true, antwoorden: ["21"], hint: "Eerst vermenigvuldigen, dan optellen en aftrekken.", uitleg: "4 × 5 = 20, dus 3 + 20 − 2 = 21." },
+      { vraag: "Bereken: (−6) + 14 − (−3)", open: true, antwoorden: ["11"], hint: "Min een negatief getal is hetzelfde als plus.", uitleg: "−6 + 14 = 8, en 8 + 3 = 11." },
+      { vraag: "Vereenvoudig de breuk 18/24.", open: true, antwoorden: ["3/4"], hint: "Deel teller en noemer door hetzelfde getal.", uitleg: "Deel beide door 6: 18/24 = 3/4." },
+      { vraag: "Bereken: 1/2 + 1/3 (schrijf als breuk)", open: true, antwoorden: ["5/6"], hint: "Maak de noemers gelijk.", uitleg: "3/6 + 2/6 = 5/6." },
+      { vraag: "Een jas kost €60. Je krijgt 15% korting. Hoeveel euro betaal je?", open: true, antwoorden: ["51", "51,00", "€51", "51 euro"], uitleg: "15% van 60 = 9. 60 − 9 = €51." },
+      { vraag: "Los op: 3x + 7 = 25. x = ?", open: true, antwoorden: ["6", "x=6"], uitleg: "3x = 18, dus x = 6." },
+      { vraag: "Een rechthoek is 8 cm lang en 5 cm breed. Wat is de omtrek in cm?", open: true, antwoorden: ["26", "26cm"], uitleg: "2 × 8 + 2 × 5 = 26 cm." },
+      { vraag: "Formule: kosten = 4 × aantal + 3. Wat zijn de kosten bij aantal = 7?", open: true, antwoorden: ["31"], uitleg: "4 × 7 + 3 = 31." },
     ],
   },
   "en-woorden": {
-    intro: "Tien woordjes Engels. Kies de juiste vertaling.",
+    intro:
+      "Engels unit 1 — School life. Vertaal de woorden en vul de zinnen aan. Let op je spelling!",
     vragen: [
-      { vraag: "school", opties: ["school", "boek", "les"], juist: 0 },
-      { vraag: "homework", opties: ["huiswerk", "huisdier", "hulp"], juist: 0 },
-      { vraag: "teacher", opties: ["leerling", "docent", "directeur"], juist: 1 },
-      { vraag: "timetable", opties: ["tijdschrift", "rooster", "tafel"], juist: 1 },
-      { vraag: "break", opties: ["pauze", "brood", "breuk"], juist: 0 },
-      { vraag: "classroom", opties: ["klasgenoot", "lokaal", "kluisje"], juist: 1 },
-      { vraag: "test", opties: ["toets", "taak", "tekst"], juist: 0 },
-      { vraag: "backpack", opties: ["rugzak", "pakket", "achterkant"], juist: 0 },
-      { vraag: "to remember", opties: ["vergeten", "onthouden", "herhalen"], juist: 1 },
-      { vraag: "on time", opties: ["op tijd", "een keer", "in de tijd"], juist: 0 },
+      { vraag: "Vertaal naar het Engels: huiswerk", open: true, antwoorden: ["homework"] },
+      { vraag: "Vertaal naar het Engels: rooster", open: true, antwoorden: ["timetable", "schedule"] },
+      { vraag: "Vertaal naar het Engels: vriendelijk", open: true, antwoorden: ["friendly", "kind"] },
+      { vraag: "Vertaal naar het Nederlands: to borrow", open: true, antwoorden: ["lenen", "te lenen"] },
+      { vraag: "Vul in met am / is / are: My friends ___ in class 1B.", open: true, antwoorden: ["are"], uitleg: "Meervoud (my friends) → are." },
+      { vraag: "Vul in met de juiste vorm van 'to have': She ___ a new bike.", open: true, antwoorden: ["has"], uitleg: "He/she/it → has." },
+      { vraag: "Present simple: He ___ (play) football every Saturday.", open: true, antwoorden: ["plays"], uitleg: "He/she/it krijgt een -s." },
+      {
+        vraag: "Welke zin is goed?",
+        opties: ["She don't like maths.", "She doesn't like maths.", "She not likes maths."],
+        juist: 1,
+        uitleg: "Ontkenning bij he/she/it: doesn't + hele werkwoord.",
+      },
+      { vraag: "Maak meervoud: one child, two ___", open: true, antwoorden: ["children"], uitleg: "Onregelmatig meervoud." },
+      { vraag: "Vertaal naar het Engels: Ik ben twaalf jaar oud.", open: true, antwoorden: ["i am twelve years old", "i'm twelve years old", "i am 12 years old", "i'm 12 years old", "i am twelve", "i'm twelve"] },
     ],
   },
   "nl-h3": {
     intro:
-      "Lees de tekst en beantwoord de drie vragen.\n\nOp de middelbare school heb je elke dag andere lessen en andere lokalen. In je agenda schrijf je op wanneer je huiswerk af moet zijn. Wie zijn agenda goed bijhoudt, hoeft nooit te haasten. Vergeet je een opdracht, dan is het slim om dit zelf bij je docent te melden.",
+      "Nederlands hoofdstuk 3 — Lezen & taalverzorging.\n\nTekst: 'De eerste week'\nNoor (12) begon deze maand in de brugklas van het Martinuscollege. De eerste dagen verdwaalde ze twee keer: ze stond in A1.14 terwijl haar les in B1.14 was. 'Ik dacht dat de letter niet uitmaakte,' lacht ze. Inmiddels weet ze dat de letter de vleugel is en het eerste cijfer de verdieping. Toch vindt Noor plannen nog het lastigst. Daarom schrijft ze sinds vorige week elke avond in haar agenda wat ze de volgende dag moet meenemen.",
     vragen: [
+      { vraag: "In welk lokaal had Noor les toen ze verdwaalde?", open: true, antwoorden: ["b1.14", "b114"] },
+      { vraag: "Wat betekent het eerste cijfer in een lokaalnummer volgens de tekst?", open: true, antwoorden: ["verdieping", "de verdieping"] },
       {
-        vraag: "Waarom is een agenda handig op de middelbare school?",
+        vraag: "Wat is de hoofdgedachte van de tekst?",
         opties: [
-          "Omdat je dan weet wanneer huiswerk af moet zijn",
-          "Omdat het mooi staat in je rugzak",
-          "Omdat de docent dat mooi vindt",
+          "Het Martinuscollege is een groot gebouw.",
+          "Noor went aan de middelbare school en leert plannen.",
+          "Noor vindt de brugklas niet leuk.",
         ],
-        juist: 0,
-      },
-      {
-        vraag: "Wat verandert er ten opzichte van de basisschool?",
-        opties: ["Je hebt één juf of meester", "Je hebt elke dag andere lessen en lokalen", "Je hebt geen huiswerk"],
         juist: 1,
       },
-      {
-        vraag: "Wat doe je volgens de tekst als je een opdracht vergeet?",
-        opties: ["Niets zeggen", "Het zelf melden bij je docent", "Het van iemand overschrijven"],
-        juist: 1,
-      },
+      { vraag: "Zoek in de tekst een signaalwoord dat een tegenstelling aangeeft.", open: true, antwoorden: ["toch", "terwijl"], uitleg: "'Toch' en 'terwijl' geven een tegenstelling aan." },
+      { vraag: "Werkwoordspelling: Gisteren ___ (verhuizen) mijn buren.", open: true, antwoorden: ["verhuisden"], uitleg: "Verhuizen → stam verhuis, 's' niet in 't kofschip → -de(n)." },
+      { vraag: "Werkwoordspelling: Hij ___ (worden) morgen dertien.", open: true, antwoorden: ["wordt"], uitleg: "Hij → stam + t: wordt." },
+      { vraag: "Wat is het onderwerp in de zin: 'Na school fietsen Sem en Lotte naar huis.'", open: true, antwoorden: ["sem en lotte"], uitleg: "Wie fietsen? Sem en Lotte." },
+      { vraag: "Wat is de persoonsvorm in: 'Morgen heb ik een toets aardrijkskunde.'", open: true, antwoorden: ["heb"], uitleg: "Maak de zin vragend: heb ik…? → heb." },
     ],
   },
   "gs-presentatie": {
     intro:
-      "Lees de tekst en beantwoord de drie vragen.\n\nIn de middeleeuwen woonden veel mensen op het platteland en werkten ze voor een heer. Ridders beschermden het gebied en kregen daarvoor land. Steden groeiden later door handel en ambachten. Wie in een stad woonde, was vaak vrijer dan een boer op het land.",
+      "Geschiedenis — Tijdvak 3 & 4: Monniken, ridders en steden (500–1500).\n\nIn de vroege middeleeuwen leefden de meeste mensen als boer op het platteland. Het leenstelsel bepaalde wie de macht had: de koning gaf land in leen aan edelen, en zij gaven een deel door aan ridders. In ruil moesten ze trouw zijn en meevechten. Horigen werkten op het land van de heer en mochten niet zomaar vertrekken. Vanaf ongeveer 1000 groeide de handel. Steden kregen stadsrechten, zoals het recht om een muur te bouwen en markt te houden. Ook in West-Friesland ontstonden steden: Grootebroek kreeg in 1364 stadsrechten.",
     vragen: [
+      { vraag: "Hoe heet het systeem waarbij land werd uitgeleend in ruil voor trouw?", open: true, antwoorden: ["leenstelsel", "het leenstelsel"] },
+      { vraag: "Hoe noem je boeren die op het land van de heer werkten en niet zomaar weg mochten?", open: true, antwoorden: ["horigen", "horige"] },
+      { vraag: "Noem één stadsrecht uit de tekst.", open: true, antwoorden: ["muur", "muur bouwen", "markt", "markt houden", "marktrecht", "een muur bouwen", "markt houden"] },
+      { vraag: "In welk jaar kreeg Grootebroek stadsrechten?", open: true, antwoorden: ["1364"] },
       {
-        vraag: "Wat kregen ridders voor hun bescherming?",
-        opties: ["Goud", "Land", "Een kasteel in de stad"],
-        juist: 1,
+        vraag: "Waarom groeiden steden vanaf ongeveer het jaar 1000?",
+        opties: ["Door de groei van de handel", "Omdat ridders er gingen wonen", "Omdat boeren geen land meer hadden"],
+        juist: 0,
       },
-      { vraag: "Waardoor groeiden steden?", opties: ["Door handel en ambachten", "Door oorlog", "Door scholen"], juist: 0 },
-      {
-        vraag: "Wie was vaak vrijer?",
-        opties: ["Een boer op het land", "Iemand die in de stad woonde", "Een ridder"],
-        juist: 1,
-      },
+      { vraag: "In welke eeuw valt het jaar 1364?", open: true, antwoorden: ["14", "14e", "14de", "veertiende", "14e eeuw", "veertiende eeuw"], uitleg: "1301–1400 is de 14e eeuw." },
     ],
   },
 };
