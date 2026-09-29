@@ -27,7 +27,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="mx-auto flex w-full max-w-6xl">
         <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-1 border-r border-border p-5 lg:flex">
           <Link to="/" className="mb-6 flex items-center gap-2.5">
-            <img src={logo.url} alt="Martinuscollege" className="h-10 w-auto animate-float-slow" />
+            <img src={logo.url} alt="Martinuscollege" className="h-16 w-auto animate-float-slow" />
             <span className="leading-tight">
               <span className="block text-lg font-extrabold">Brugklas-game</span>
               <span className="block text-[11px] font-bold uppercase tracking-wider text-rose">

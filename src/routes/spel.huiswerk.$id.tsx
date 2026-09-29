@@ -2,10 +2,12 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { BigButton, Card, SectionTitle } from "@/components/game/bits";
 import { Quiz } from "@/components/game/Quiz";
-import { EXERCISES, HOMEWORK, SUBJECTS } from "@/lib/game/data";
+import { MiniGame } from "@/components/game/MiniGame";
+import { EXERCISES, HOMEWORK, MINIGAMES, SUBJECTS } from "@/lib/game/data";
 import { useGame } from "@/lib/game/state";
 
 export const Route = createFileRoute("/spel/huiswerk/$id")({
+  head: () => ({ meta: [{ title: "Huiswerk maken — Martinuscollege Brugklas-game" }] }),
   component: OpdrachtPagina,
 });
 
@@ -14,9 +16,11 @@ function OpdrachtPagina() {
   const { state, dispatch } = useGame();
   const navigate = useNavigate();
   const [resultaat, setResultaat] = useState<{ correct: number; totaal: number } | null>(null);
+  const [minigameKlaar, setMinigameKlaar] = useState(false);
 
   const def = HOMEWORK.find((h) => h.id === id);
   const oefening = EXERCISES[id];
+  const minigame = MINIGAMES[id];
 
   if (!def || !oefening) {
     return (
@@ -30,7 +34,18 @@ function OpdrachtPagina() {
   }
 
   const vak = SUBJECTS[def.subject];
-  const alKlaar = state.homework.find((h) => h.id === id)?.completedDag !== null;
+  const hw = state.homework.find((h) => h.id === id);
+  if (!hw) {
+    return (
+      <Card className="mx-auto max-w-2xl text-sm text-muted-foreground">
+        Dit huiswerk heb je nog niet opgekregen. Speel verder in de week!
+        <Link to="/spel/huiswerk" className="mt-3 block">
+          <BigButton variant="soft">Terug naar huiswerk</BigButton>
+        </Link>
+      </Card>
+    );
+  }
+  const alKlaar = hw.completedDag !== null;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -58,6 +73,8 @@ function OpdrachtPagina() {
             <BigButton variant="soft">Terug naar huiswerk</BigButton>
           </Link>
         </Card>
+      ) : minigame && !minigameKlaar ? (
+        <MiniGame game={minigame} onKlaar={() => setMinigameKlaar(true)} />
       ) : (
         <Quiz
           vragen={oefening.vragen}

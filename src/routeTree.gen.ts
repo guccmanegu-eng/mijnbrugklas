@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfielRouteImport } from './routes/profiel'
 import { Route as SpelRouteImport } from './routes/spel'
 import { Route as SpelIndexRouteImport } from './routes/spel.index'
-import { Route as SpelHuiswerkRouteImport } from './routes/spel.huiswerk'
 import { Route as SpelPlanningRouteImport } from './routes/spel.planning'
 import { Route as SpelRapportRouteImport } from './routes/spel.rapport'
 import { Route as SpelRugzakRouteImport } from './routes/spel.rugzak'
@@ -21,6 +20,7 @@ import { Route as SpelSchoolRouteImport } from './routes/spel.school'
 import { Route as SpelToetsRouteImport } from './routes/spel.toets'
 import { Route as SpelVaardighedenRouteImport } from './routes/spel.vaardigheden'
 import { Route as SpelVoortgangRouteImport } from './routes/spel.voortgang'
+import { Route as SpelHuiswerkIndexRouteImport } from './routes/spel.huiswerk.index'
 import { Route as SpelHuiswerkIdRouteImport } from './routes/spel.huiswerk.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,11 +41,6 @@ const SpelRoute = SpelRouteImport.update({
 const SpelIndexRoute = SpelIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SpelRoute,
-} as any)
-const SpelHuiswerkRoute = SpelHuiswerkRouteImport.update({
-  id: '/huiswerk',
-  path: '/huiswerk',
   getParentRoute: () => SpelRoute,
 } as any)
 const SpelPlanningRoute = SpelPlanningRouteImport.update({
@@ -83,17 +78,21 @@ const SpelVoortgangRoute = SpelVoortgangRouteImport.update({
   path: '/voortgang',
   getParentRoute: () => SpelRoute,
 } as any)
+const SpelHuiswerkIndexRoute = SpelHuiswerkIndexRouteImport.update({
+  id: '/huiswerk/',
+  path: '/huiswerk/',
+  getParentRoute: () => SpelRoute,
+} as any)
 const SpelHuiswerkIdRoute = SpelHuiswerkIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => SpelHuiswerkRoute,
+  id: '/huiswerk/$id',
+  path: '/huiswerk/$id',
+  getParentRoute: () => SpelRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/profiel': typeof ProfielRoute
   '/spel': typeof SpelRouteWithChildren
-  '/spel/huiswerk': typeof SpelHuiswerkRouteWithChildren
   '/spel/planning': typeof SpelPlanningRoute
   '/spel/rapport': typeof SpelRapportRoute
   '/spel/rugzak': typeof SpelRugzakRoute
@@ -103,11 +102,11 @@ export interface FileRoutesByFullPath {
   '/spel/voortgang': typeof SpelVoortgangRoute
   '/spel/': typeof SpelIndexRoute
   '/spel/huiswerk/$id': typeof SpelHuiswerkIdRoute
+  '/spel/huiswerk/': typeof SpelHuiswerkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/profiel': typeof ProfielRoute
-  '/spel/huiswerk': typeof SpelHuiswerkRouteWithChildren
   '/spel/planning': typeof SpelPlanningRoute
   '/spel/rapport': typeof SpelRapportRoute
   '/spel/rugzak': typeof SpelRugzakRoute
@@ -117,13 +116,13 @@ export interface FileRoutesByTo {
   '/spel/voortgang': typeof SpelVoortgangRoute
   '/spel': typeof SpelIndexRoute
   '/spel/huiswerk/$id': typeof SpelHuiswerkIdRoute
+  '/spel/huiswerk': typeof SpelHuiswerkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/profiel': typeof ProfielRoute
   '/spel': typeof SpelRouteWithChildren
-  '/spel/huiswerk': typeof SpelHuiswerkRouteWithChildren
   '/spel/planning': typeof SpelPlanningRoute
   '/spel/rapport': typeof SpelRapportRoute
   '/spel/rugzak': typeof SpelRugzakRoute
@@ -133,6 +132,7 @@ export interface FileRoutesById {
   '/spel/voortgang': typeof SpelVoortgangRoute
   '/spel/': typeof SpelIndexRoute
   '/spel/huiswerk/$id': typeof SpelHuiswerkIdRoute
+  '/spel/huiswerk/': typeof SpelHuiswerkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,7 +140,6 @@ export interface FileRouteTypes {
     | '/'
     | '/profiel'
     | '/spel'
-    | '/spel/huiswerk'
     | '/spel/planning'
     | '/spel/rapport'
     | '/spel/rugzak'
@@ -150,11 +149,11 @@ export interface FileRouteTypes {
     | '/spel/voortgang'
     | '/spel/'
     | '/spel/huiswerk/$id'
+    | '/spel/huiswerk/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/profiel'
-    | '/spel/huiswerk'
     | '/spel/planning'
     | '/spel/rapport'
     | '/spel/rugzak'
@@ -164,12 +163,12 @@ export interface FileRouteTypes {
     | '/spel/voortgang'
     | '/spel'
     | '/spel/huiswerk/$id'
+    | '/spel/huiswerk'
   id:
     | '__root__'
     | '/'
     | '/profiel'
     | '/spel'
-    | '/spel/huiswerk'
     | '/spel/planning'
     | '/spel/rapport'
     | '/spel/rugzak'
@@ -179,6 +178,7 @@ export interface FileRouteTypes {
     | '/spel/voortgang'
     | '/spel/'
     | '/spel/huiswerk/$id'
+    | '/spel/huiswerk/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -215,13 +215,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/spel/'
       preLoaderRoute: typeof SpelIndexRouteImport
-      parentRoute: typeof SpelRoute
-    }
-    '/spel/huiswerk': {
-      id: '/spel/huiswerk'
-      path: '/huiswerk'
-      fullPath: '/spel/huiswerk'
-      preLoaderRoute: typeof SpelHuiswerkRouteImport
       parentRoute: typeof SpelRoute
     }
     '/spel/planning': {
@@ -273,30 +266,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpelVoortgangRouteImport
       parentRoute: typeof SpelRoute
     }
+    '/spel/huiswerk/': {
+      id: '/spel/huiswerk/'
+      path: '/huiswerk'
+      fullPath: '/spel/huiswerk/'
+      preLoaderRoute: typeof SpelHuiswerkIndexRouteImport
+      parentRoute: typeof SpelRoute
+    }
     '/spel/huiswerk/$id': {
       id: '/spel/huiswerk/$id'
-      path: '/$id'
+      path: '/huiswerk/$id'
       fullPath: '/spel/huiswerk/$id'
       preLoaderRoute: typeof SpelHuiswerkIdRouteImport
-      parentRoute: typeof SpelHuiswerkRoute
+      parentRoute: typeof SpelRoute
     }
   }
 }
 
-interface SpelHuiswerkRouteChildren {
-  SpelHuiswerkIdRoute: typeof SpelHuiswerkIdRoute
-}
-
-const SpelHuiswerkRouteChildren: SpelHuiswerkRouteChildren = {
-  SpelHuiswerkIdRoute: SpelHuiswerkIdRoute,
-}
-
-const SpelHuiswerkRouteWithChildren = SpelHuiswerkRoute._addFileChildren(
-  SpelHuiswerkRouteChildren,
-)
-
 interface SpelRouteChildren {
-  SpelHuiswerkRoute: typeof SpelHuiswerkRouteWithChildren
   SpelPlanningRoute: typeof SpelPlanningRoute
   SpelRapportRoute: typeof SpelRapportRoute
   SpelRugzakRoute: typeof SpelRugzakRoute
@@ -305,10 +292,11 @@ interface SpelRouteChildren {
   SpelVaardighedenRoute: typeof SpelVaardighedenRoute
   SpelVoortgangRoute: typeof SpelVoortgangRoute
   SpelIndexRoute: typeof SpelIndexRoute
+  SpelHuiswerkIdRoute: typeof SpelHuiswerkIdRoute
+  SpelHuiswerkIndexRoute: typeof SpelHuiswerkIndexRoute
 }
 
 const SpelRouteChildren: SpelRouteChildren = {
-  SpelHuiswerkRoute: SpelHuiswerkRouteWithChildren,
   SpelPlanningRoute: SpelPlanningRoute,
   SpelRapportRoute: SpelRapportRoute,
   SpelRugzakRoute: SpelRugzakRoute,
@@ -317,6 +305,8 @@ const SpelRouteChildren: SpelRouteChildren = {
   SpelVaardighedenRoute: SpelVaardighedenRoute,
   SpelVoortgangRoute: SpelVoortgangRoute,
   SpelIndexRoute: SpelIndexRoute,
+  SpelHuiswerkIdRoute: SpelHuiswerkIdRoute,
+  SpelHuiswerkIndexRoute: SpelHuiswerkIndexRoute,
 }
 
 const SpelRouteWithChildren = SpelRoute._addFileChildren(SpelRouteChildren)

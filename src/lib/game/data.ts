@@ -171,6 +171,57 @@ export type Question = { vraag: string; tekst?: string; uitleg?: string } & (
   | { open: true; antwoorden: string[]; hint?: string }
 );
 
+export type MiniGameDef = { titel: string; uitleg: string } & (
+  | { type: "koppel"; paren: [string, string][] }
+  | { type: "snel"; sommen: [string, string][]; seconden: number }
+  | { type: "volgorde"; items: string[] }
+);
+
+export const MINIGAMES: Record<string, MiniGameDef> = {
+  "wi-opdr": {
+    type: "snel",
+    titel: "Rekenrace",
+    uitleg: "Warm je brein op! Hoeveel sommen los jij op binnen 45 seconden?",
+    seconden: 45,
+    sommen: [
+      ["7 × 8", "56"], ["12 × 3", "36"], ["81 : 9", "9"], ["−4 + 10", "6"], ["15 − 22", "-7"],
+      ["6 × 7", "42"], ["144 : 12", "12"], ["25% van 80", "20"], ["3² ", "9"], ["−3 × 5", "-15"],
+      ["100 − 37", "63"], ["9 × 9", "81"],
+    ],
+  },
+  "en-woorden": {
+    type: "koppel",
+    titel: "Word Match",
+    uitleg: "Koppel elk Engels woord aan de Nederlandse vertaling.",
+    paren: [
+      ["teacher", "docent"], ["classroom", "lokaal"], ["break", "pauze"],
+      ["pencil case", "etui"], ["to forget", "vergeten"], ["test", "toets"],
+    ],
+  },
+  "nl-h3": {
+    type: "koppel",
+    titel: "Zinsdelen-match",
+    uitleg: "Koppel elk begrip aan de goede uitleg.",
+    paren: [
+      ["persoonsvorm", "verandert bij tijd/getal"], ["onderwerp", "wie of wat + pv"],
+      ["signaalwoord", "toont verband"], ["hoofdgedachte", "belangrijkste zin"],
+      ["'t kofschip", "regel voor -te/-de"],
+    ],
+  },
+  "gs-presentatie": {
+    type: "volgorde",
+    titel: "Tijdlijn-uitdaging",
+    uitleg: "Klik de gebeurtenissen aan van oud naar nieuw.",
+    items: [
+      "Romeinen in Nederland",
+      "Monniken verspreiden het christendom",
+      "Leenstelsel en ridders",
+      "Handel en steden groeien",
+      "Grootebroek krijgt stadsrechten (1364)",
+    ],
+  },
+};
+
 export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> = {
   "wi-opdr": {
     intro:

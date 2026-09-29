@@ -3,7 +3,7 @@ import { Bar, BigButton, Card, Pill, SectionTitle } from "@/components/game/bits
 import { DAY_NAMES, HOMEWORK, SUBJECTS } from "@/lib/game/data";
 import { useGame } from "@/lib/game/state";
 
-export const Route = createFileRoute("/spel/huiswerk")({
+export const Route = createFileRoute("/spel/huiswerk/")({
   component: HuiswerkPagina,
 });
 

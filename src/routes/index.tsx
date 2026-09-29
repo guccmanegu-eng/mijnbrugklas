@@ -53,10 +53,14 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-5">
-        <span className="flex items-center gap-2.5">
-          <img src={logo.url} alt="Martinuscollege Grootebroek" className="h-12 w-auto wiggle-hover" />
-          <span className="leading-tight">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-4 sm:py-5">
+        <span className="flex min-w-0 items-center gap-3">
+          <img
+            src={logo.url}
+            alt="Martinuscollege Grootebroek"
+            className="h-16 w-auto shrink-0 wiggle-hover sm:h-20"
+          />
+          <span className="hidden leading-tight sm:block">
             <span className="block text-lg font-extrabold">Brugklas-game</span>
             <span className="block text-[11px] font-bold uppercase tracking-wider text-rose">
               Grootebroek
