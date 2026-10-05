@@ -16,7 +16,7 @@ export const Route = createFileRoute("/profiel")({
   component: ProfielPagina,
 });
 
-const KLASSEN = ["Brugklas", "Havo/Vwo", "Vmbo"];
+const KLASSEN = ["Kader", "Havo/Vwo", "Vmbo"];
 
 function ProfielPagina() {
   const { state, dispatch } = useGame();
