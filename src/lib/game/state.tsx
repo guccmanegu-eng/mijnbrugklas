@@ -115,6 +115,7 @@ export type Action =
   | { type: "TOGGLE_ITEM"; item: string }
   | { type: "START_DAG" }
   | { type: "GA_NAAR_LOKAAL"; keuze: string }
+  | { type: "STAR" }
   | { type: "CLEAR_RESULT" }
   | { type: "SITUATIE_ANTWOORD"; id: string; optie: number }
   | { type: "PLAN_HUISWERK"; id: string; dag: number | null }
@@ -275,6 +276,9 @@ function reducer(state: GameState, action: Action): GameState {
 
       return withBadges(base);
     }
+
+    case "STAR":
+      return { ...state, xp: state.xp + 2 };
 
     case "CLEAR_RESULT":
       return { ...state, lastResult: null };
