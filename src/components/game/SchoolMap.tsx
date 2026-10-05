@@ -384,7 +384,7 @@ export function SchoolMapGame({ target, vakNaam, vakIcon, minutenOver, startLoka
       const bob = keys.current.size && !done.current ? Math.sin(t * 12) * 2 : 0;
       ctx.beginPath();
       ctx.arc(px, py + 6, 10, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillStyle = "rgba(0,0,0,0)";
       ctx.fill();
       ctx.font = "22px serif";
       ctx.globalAlpha = 0.5;
