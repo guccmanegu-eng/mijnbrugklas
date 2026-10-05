@@ -387,7 +387,10 @@ export function SchoolMapGame({ target, vakNaam, vakIcon, minutenOver, startLoka
       ctx.fillStyle = "rgba(0,0,0,0.15)";
       ctx.fill();
       ctx.font = "22px serif";
+      ctx.globalAlpha = 0.5;
       ctx.fillText("🧑‍🎓", px, py + bob);
+
+      ctx.globalAlpha = 1;
 
       raf = requestAnimationFrame(loop);
     };
