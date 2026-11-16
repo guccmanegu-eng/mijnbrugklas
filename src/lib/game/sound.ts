@@ -122,6 +122,11 @@ export const snd = {
     tone(988, 0.15, "triangle", 0.06, 0.25);
     tone(1175, 0.3, "triangle", 0.06, 0.4);
   },
+  stap: () => tone(95 + Math.random() * 25, 0.04, "triangle", 0.03),
+  deur: () => {
+    ruis(0.15, 0.03);
+    tone(180, 0.12, "sine", 0.05, 0, 120);
+  },
   zoem: () => tone(220, 0.15, "sawtooth", 0.02, 0, 260),
   level: () => {
     [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.18, "triangle", 0.07, i * 0.1));

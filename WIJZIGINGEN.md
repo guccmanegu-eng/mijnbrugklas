@@ -18,9 +18,19 @@ een tip voor "in het echt" en effect op je vaardigheden (beter spelen = beter ef
 
 Events worden aan het begin van de week ingepland (`planEvents` in `src/lib/game/events.ts`).
 
+## 🧍 Lokaal zoeken in 3D (nieuw, standaard)
+- First-person door de gangen lopen (raycasting op canvas, geen extra packages, ±60 fps).
+- Elke vleugel heeft eigen kluisjeskleur: **A blauw, B roze, C groen**, met grote "VLEUGEL"-borden aan het eind van de gangen.
+- Op elke deur staat het lokaalnummer; de deur van je doel licht zacht groen op.
+- 🪧 Roosterpalen in de gangen: loop erheen om een roosterwijziging te zien (zonder strafminuten).
+- Kompas met afstand, minikaart (uit te zetten voor extra uitdaging), voetstappen, deurgeluid, bel als je te laat bent.
+- Besturing: ↑/W lopen, ←→/A D draaien, Shift rennen, slepen met muis of vinger om rond te kijken, knoppen op telefoon/tablet.
+- De oude bovenaanzicht-versie is nog te kiezen via de knop "🗺️ Plattegrond" (keuze wordt onthouden).
+- Kaartfix: de lokalen naast de westelijke hal hadden geen muur naar de hal toe.
+
 ## 🗺️ Schoolkaart (lokaal zoeken)
 - De klok loopt echt: elke 3 seconden lopen = 1 minuut. Je kunt dus écht te laat komen.
-- Medeleerlingen lopen door de gangen; botsen kost tijd.
+- Medeleerlingen lopen door de gangen en stappen opzij als jij eraan komt (geen botsingen).
 - De conciërge 🧑‍🔧 zegt er wat van als je bij hem rent (+1 minuut).
 - Verkeerd lokaal? Je wordt teruggezet en krijgt +3 minuten (het spel gaat door).
 - Roosterwijziging niet gecheckt? Dan vind je een **leeg lokaal met een briefje** en moet je door naar het nieuwe lokaal.

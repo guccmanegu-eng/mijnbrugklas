@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BigButton, Card, Pill, SectionTitle } from "@/components/game/bits";
 import { SchoolMapGame } from "@/components/game/SchoolMap";
+import { SchoolMap3D } from "@/components/game/SchoolMap3D";
 import { ALL_ROOMS, SUBJECTS } from "@/lib/game/data";
 import { doelLokaal, fmtTijd, useGame, volgendeLes } from "@/lib/game/state";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,22 @@ function SchoolPagina() {
   const bezig = state.phase === "les" && !!les && !!vak;
   const lesKey = `${state.currentDag}-${state.lessonIndex}`;
   const [gekeken, setGekeken] = useState("");
+  const [weergave, setWeergave] = useState<"3d" | "2d">("3d");
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("brugklas-weergave") === "2d") setWeergave("2d");
+    } catch {
+      /* noop */
+    }
+  }, []);
+  const kiesWeergave = (w: "3d" | "2d") => {
+    setWeergave(w);
+    try {
+      localStorage.setItem("brugklas-weergave", w);
+    } catch {
+      /* noop */
+    }
+  };
   const gewijzigd = doelLokaal(state);
   const gezien = !!gewijzigd && !!state.wijziging?.gecheckt;
   // Wat de speler dénkt dat het lokaal is: pas na de roosterpaal zie je de wijziging
@@ -110,27 +127,68 @@ function SchoolPagina() {
           </div>
           <p className="mt-1 mb-4 text-sm text-muted-foreground">
             Je bent nu bij <strong>{state.currentLokaal}</strong>. Zoek lokaal <strong>{zichtbaarLokaal}</strong>. De
-            klok loopt zodra je begint — en een verkeerd lokaal binnenlopen kost je tijd!
+            klok loopt zodra je begint — en een verkeerd lokaal binnenlopen kost je tijd! In 3D kun je ook naar een 🪧 roosterpaal in de gang lopen.
           </p>
-          <SchoolMapGame
-            key={`${state.currentDag}-${state.lessonIndex}`}
-            target={zichtbaarLokaal}
-            echtLokaal={gewijzigd ?? vak.lokaal}
-            vakNaam={vak.naam}
-            vakIcon={vak.icon}
-            minutenOver={les.minuten - state.minuten}
-            startLokaal={state.currentLokaal}
-            onStar={() => dispatch({ type: "STAR" })}
-            onArrive={(lokaal, info) =>
-              dispatch({
-                type: "GA_NAAR_LOKAAL",
-                keuze: lokaal,
-                minutenOnderweg: info.minutenOnderweg,
-                fouten: info.fouten,
-                seconden: info.seconden,
-              })
-            }
-          />
+          <div className="mb-3 inline-flex rounded-2xl bg-secondary p-1 text-sm font-bold">
+            {(["3d", "2d"] as const).map((w) => (
+              <button
+                key={w}
+                type="button"
+                onClick={() => kiesWeergave(w)}
+                className={cn(
+                  "rounded-xl px-4 py-1.5 transition-colors",
+                  weergave === w ? "bg-card text-brand shadow-sm" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {w === "3d" ? "🧍 3D (zelf lopen)" : "🗺️ Plattegrond"}
+              </button>
+            ))}
+          </div>
+          {weergave === "3d" ? (
+            <SchoolMap3D
+              key={`3d-${state.currentDag}-${state.lessonIndex}`}
+              target={zichtbaarLokaal}
+              echtLokaal={gewijzigd ?? vak.lokaal}
+              vakNaam={vak.naam}
+              vakIcon={vak.icon}
+              minutenOver={les.minuten - state.minuten}
+              startLokaal={state.currentLokaal}
+              onStar={() => dispatch({ type: "STAR" })}
+              onRoosterpaal={() => {
+                dispatch({ type: "CHECK_ROOSTERPAAL" });
+                setGekeken(lesKey);
+              }}
+              onArrive={(lokaal, info) =>
+                dispatch({
+                  type: "GA_NAAR_LOKAAL",
+                  keuze: lokaal,
+                  minutenOnderweg: info.minutenOnderweg,
+                  fouten: info.fouten,
+                  seconden: info.seconden,
+                })
+              }
+            />
+          ) : (
+            <SchoolMapGame
+              key={`${state.currentDag}-${state.lessonIndex}`}
+              target={zichtbaarLokaal}
+              echtLokaal={gewijzigd ?? vak.lokaal}
+              vakNaam={vak.naam}
+              vakIcon={vak.icon}
+              minutenOver={les.minuten - state.minuten}
+              startLokaal={state.currentLokaal}
+              onStar={() => dispatch({ type: "STAR" })}
+              onArrive={(lokaal, info) =>
+                dispatch({
+                  type: "GA_NAAR_LOKAAL",
+                  keuze: lokaal,
+                  minutenOnderweg: info.minutenOnderweg,
+                  fouten: info.fouten,
+                  seconden: info.seconden,
+                })
+              }
+            />
+          )}
         </Card>
       ) : !bezig ? (
         <Card className="mb-4 text-sm text-muted-foreground">

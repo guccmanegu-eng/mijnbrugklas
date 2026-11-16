@@ -9,15 +9,15 @@ import { beweeg } from "./minigames/kit";
  * naar het juiste lokaal. Pak sterren voor bonus-XP onderweg.
  * ===================================================================== */
 
-const TILE = 26;
-const COLS = 27;
-const ROWS = 25;
+export const TILE = 26;
+export const COLS = 27;
+export const ROWS = 25;
 const W = COLS * TILE;
 const H = ROWS * TILE;
 
-const key = (x: number, y: number) => `${x},${y}`;
+export const key = (x: number, y: number) => `${x},${y}`;
 
-type RoomDef = {
+export type RoomDef = {
   code: string;
   x: number;
   y: number;
@@ -30,9 +30,9 @@ type RoomDef = {
 
 /* Kamers per vleugel: 3 boven de gang, 3 eronder */
 const ROOM_COLS = [
-  { x: 2, door: 4 },
-  { x: 10, door: 12 },
-  { x: 18, door: 20 },
+  { x: 3, w: 5, door: 4 },
+  { x: 10, w: 6, door: 12 },
+  { x: 18, w: 6, door: 20 },
 ];
 const WINGS = [
   { rooms: ALL_ROOMS.A, corridor: 4, topY: 1, botY: 6 },
@@ -40,13 +40,13 @@ const WINGS = [
   { rooms: ALL_ROOMS.C, corridor: 20, topY: 17, botY: 22 },
 ];
 
-const ROOMS: RoomDef[] = WINGS.flatMap((wing) =>
+export const ROOMS: RoomDef[] = WINGS.flatMap((wing) =>
   ROOM_COLS.flatMap((col, i) => [
     {
       code: wing.rooms[i]!,
       x: col.x,
       y: wing.topY,
-      w: 6,
+      w: col.w,
       h: 2,
       doorX: col.door,
       doorY: wing.corridor - 1,
@@ -56,7 +56,7 @@ const ROOMS: RoomDef[] = WINGS.flatMap((wing) =>
       code: wing.rooms[i + 3]!,
       x: col.x,
       y: wing.botY,
-      w: 6,
+      w: col.w,
       h: 2,
       doorX: col.door,
       doorY: wing.corridor + 1,
@@ -66,7 +66,7 @@ const ROOMS: RoomDef[] = WINGS.flatMap((wing) =>
 );
 
 /* Begaanbare tegels: gangen, hallen, deuren en lokalen */
-const WALKABLE = new Set<string>();
+export const WALKABLE = new Set<string>();
 for (const y of [4, 12, 20]) for (let x = 1; x <= 25; x++) WALKABLE.add(key(x, y));
 for (const x of [1, 25]) for (let y = 4; y <= 20; y++) WALKABLE.add(key(x, y));
 for (const r of ROOMS) {
@@ -74,7 +74,7 @@ for (const r of ROOMS) {
   WALKABLE.add(key(r.doorX, r.doorY));
 }
 
-const STAR_TILES: [number, number][] = [
+export const STAR_TILES: [number, number][] = [
   [6, 4],
   [21, 4],
   [8, 12],
@@ -102,9 +102,49 @@ const sndFout = snd.fout;
 const SEC_PER_MIN = 3;
 const STRAF_MIN = 3;
 
-type Npc = { x: number; y: number; vx: number; vy: number; e: string; conc?: boolean; min: number; max: number; as: "x" | "y" };
+export type Npc = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  e: string;
+  conc?: boolean;
+  min: number;
+  max: number;
+  as: "x" | "y";
+  /** blijft even staan als jij eraan komt */
+  wacht?: number;
+  /** stapt opzij (loodrecht op de looprichting), in dezelfde eenheid als x/y */
+  zij?: number;
+};
 
-function maakNpcs(): Npc[] {
+/**
+ * Medeleerlingen lopen niet meer tegen je aan: komt de speler dichtbij,
+ * dan blijven ze even staan en stappen ze opzij. Geen botsingen meer.
+ */
+export function updateNpc(n: Npc, dt: number, spelerX: number, spelerY: number, dichtbij: number, opzij: number) {
+  const d = Math.hypot(n.x - spelerX, n.y - spelerY);
+  if (!n.conc && d < dichtbij) n.wacht = 0.6;
+  n.wacht = Math.max(0, (n.wacht ?? 0) - dt);
+  // opzij stappen, weg van de speler
+  const doelZij = n.wacht > 0 ? (n.as === "x" ? (spelerY > n.y ? -opzij : opzij) : spelerX > n.x ? -opzij : opzij) : 0;
+  n.zij = (n.zij ?? 0) + (doelZij - (n.zij ?? 0)) * Math.min(1, dt * 8);
+  if (n.wacht > 0) return d;
+  if (n.as === "x") {
+    n.x += n.vx * dt;
+    if (n.x < n.min || n.x > n.max) n.vx *= -1;
+  } else {
+    n.y += n.vy * dt;
+    if (n.y < n.min || n.y > n.max) n.vy *= -1;
+  }
+  return d;
+}
+
+/** Waar de NPC getekend wordt (incl. opzij-stap). */
+export const npcPos = (n: Npc) =>
+  n.as === "x" ? { x: n.x, y: n.y + (n.zij ?? 0) } : { x: n.x + (n.zij ?? 0), y: n.y };
+
+export function maakNpcs(): Npc[] {
   const e = ["🧑", "👧", "🧒", "👦", "👩‍🦱", "🧑‍🦰"];
   const gang = (y: number, x: number, v: number, i: number): Npc => ({
     x: (x + 0.5) * TILE,
@@ -272,28 +312,13 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
 
       /* --- NPC's in de gang --- */
       for (const n of npcs.current) {
-        if (n.as === "x") {
-          n.x += n.vx * dt;
-          if (n.x < n.min || n.x > n.max) n.vx *= -1;
-        } else {
-          n.y += n.vy * dt;
-          if (n.y < n.min || n.y > n.max) n.vy *= -1;
-        }
+        const d = updateNpc(n, dt, pos.current.x, pos.current.y, 42, 8);
         if (done.current) continue;
-        const d = Math.hypot(n.x - pos.current.x, n.y - pos.current.y);
-        if (n.conc) {
-          if (d < 60 && keys.current.has("run") && rs.rennenStraf <= 0) {
-            rs.rennenStraf = 5;
-            rs.sec += SEC_PER_MIN;
-            snd.bots();
-            meld("🧑‍🔧 Conciërge: 'Niet rennen in de gang!' (+1 min)", "warn");
-          }
-        } else if (d < 17 && rs.stun <= 0) {
-          rs.stun = 0.45;
+        if (n.conc && d < 60 && keys.current.has("run") && rs.rennenStraf <= 0) {
+          rs.rennenStraf = 5;
+          rs.sec += SEC_PER_MIN;
           snd.bots();
-          if (n.as === "x") n.vx *= -1;
-          else n.vy *= -1;
-          meld("💥 Botsing! Kijk uit waar je loopt.", "warn");
+          meld("🧑‍🔧 Conciërge: 'Niet rennen in de gang!' (+1 min)", "warn");
         }
       }
 
@@ -483,10 +508,11 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
       for (const n of npcs.current) {
         ctx.fillStyle = "rgba(0,0,0,0.12)";
         ctx.beginPath();
-        ctx.ellipse(n.x, n.y + 8, 8, 3.5, 0, 0, Math.PI * 2);
+        const np = npcPos(n);
+        ctx.ellipse(np.x, np.y + 8, 8, 3.5, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.font = n.conc ? "20px serif" : "18px serif";
-        ctx.fillText(n.e, n.x, n.y + Math.sin(t * 10 + n.x) * 1.2);
+        ctx.fillText(n.e, np.x, np.y + Math.sin(t * 10 + n.x) * 1.2);
       }
 
       /* speler */
@@ -565,7 +591,7 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
           bericht?.tone === "bad" ? "text-rose" : bericht?.tone === "warn" ? "text-amber" : "text-muted-foreground",
         )}
       >
-        {bericht?.tekst ?? "Elke 3 seconden lopen kost 1 minuut. Botsen en verkeerde lokalen kosten extra tijd!"}
+        {bericht?.tekst ?? "Elke 3 seconden lopen kost 1 minuut. Een verkeerd lokaal kost extra tijd!"}
       </p>
 
       {/* Speelveld */}
