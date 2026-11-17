@@ -29,13 +29,16 @@ function RugzakPagina() {
         <Card className="mb-4 border-amber/50 bg-amber/10 text-sm">
           <p className="font-bold">🔒 Je bent al op school</p>
           <p className="mt-1 text-muted-foreground">
-            Wat je nu niet bij je hebt, ligt thuis. Na school kun je je rugzak weer inpakken — met het rooster van morgen ernaast.
+            Wat je nu niet bij je hebt, ligt thuis. Na school kun je je rugzak weer inpakken — met
+            het rooster van morgen ernaast.
           </p>
         </Card>
       ) : null}
 
       <Card className="mb-4">
-        <p className="text-sm font-bold">{voorMorgen ? "Morgen heb je nodig" : "Vandaag heb je nodig"}</p>
+        <p className="text-sm font-bold">
+          {voorMorgen ? "Morgen heb je nodig" : "Vandaag heb je nodig"}
+        </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {[...nodig].map((item) => {
             const def = BACKPACK_ITEMS.find((b) => b.id === item)!;

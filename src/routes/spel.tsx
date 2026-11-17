@@ -11,9 +11,15 @@ export const Route = createFileRoute("/spel")({
   head: () => ({
     meta: [
       { title: "Simulatie — Brugklas" },
-      { name: "description", content: "Speel je eerste schoolweek: lessen, huiswerk, planning en toets." },
+      {
+        name: "description",
+        content: "Speel je eerste schoolweek: lessen, huiswerk, planning en toets.",
+      },
       { property: "og:title", content: "Simulatie — Brugklas" },
-      { property: "og:description", content: "Speel je eerste schoolweek in de Brugklas-simulator." },
+      {
+        property: "og:description",
+        content: "Speel je eerste schoolweek in de Brugklas-simulator.",
+      },
     ],
   }),
   component: SpelLayout,
@@ -25,8 +31,14 @@ function SpelLayout() {
   // Wacht tot een opgeslagen spel is ingeladen, anders flitst "Maak eerst je profiel" voorbij.
   if (!geladen) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-5" role="status" aria-live="polite">
-        <p className="animate-pulse text-sm font-semibold text-muted-foreground">🎒 Je rugzak wordt gepakt…</p>
+      <div
+        className="flex min-h-screen items-center justify-center px-5"
+        role="status"
+        aria-live="polite"
+      >
+        <p className="animate-pulse text-sm font-semibold text-muted-foreground">
+          🎒 Je rugzak wordt gepakt…
+        </p>
       </div>
     );
   }
@@ -72,8 +84,12 @@ function SituationDialog() {
       aria-labelledby="situatie-titel"
     >
       <Card className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-b-none sm:rounded-3xl">
-        <p className="text-4xl" aria-hidden="true">{situatie.icon}</p>
-        <h2 id="situatie-titel" className="mt-2 text-xl font-bold">{situatie.titel}</h2>
+        <p className="text-4xl" aria-hidden="true">
+          {situatie.icon}
+        </p>
+        <h2 id="situatie-titel" className="mt-2 text-xl font-bold">
+          {situatie.titel}
+        </h2>
         <p className="mt-1 text-sm text-muted-foreground">{situatie.vraag}</p>
 
         <div className="mt-4 space-y-2.5">
@@ -107,7 +123,9 @@ function SituationDialog() {
                 optie.goed ? "bg-mint/12 text-mint" : "bg-amber/15 text-amber",
               )}
             >
-              <p className="font-bold">{optie.goed ? "✅ Goede keuze" : "💡 Denk hier eens over na"}</p>
+              <p className="font-bold">
+                {optie.goed ? "✅ Goede keuze" : "💡 Denk hier eens over na"}
+              </p>
               <p className="mt-1 text-foreground/80">{optie.feedback}</p>
             </div>
             <BigButton

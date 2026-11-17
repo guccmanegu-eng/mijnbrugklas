@@ -18,7 +18,15 @@ import {
   SUBJECTS,
   type SkillId,
 } from "./data";
-import { EVENT_BY_ID, LIVE_EVENTS, eventEffect, eventXp, planEvents, type GameId, type GeplandEvent } from "./events";
+import {
+  EVENT_BY_ID,
+  LIVE_EVENTS,
+  eventEffect,
+  eventXp,
+  planEvents,
+  type GameId,
+  type GeplandEvent,
+} from "./events";
 
 export type Phase = "setup" | "ochtend" | "les" | "avond" | "toets" | "klaar";
 
@@ -144,7 +152,13 @@ export type Action =
   | { type: "SETUP"; naam: string; classType: string }
   | { type: "TOGGLE_ITEM"; item: string }
   | { type: "START_DAG" }
-  | { type: "GA_NAAR_LOKAAL"; keuze: string; minutenOnderweg?: number; fouten?: number; seconden?: number }
+  | {
+      type: "GA_NAAR_LOKAAL";
+      keuze: string;
+      minutenOnderweg?: number;
+      fouten?: number;
+      seconden?: number;
+    }
   | { type: "STAR" }
   | { type: "CHECK_ROOSTERPAAL" }
   | { type: "CLEAR_RESULT" }
@@ -187,7 +201,9 @@ function withBadges(state: GameState): GameState {
   }
   if (state.geleerdOpDagen.length >= 2) badges.add("slim");
   if (state.besteStreak >= 4) badges.add("combo");
-  const goedeKeuzes = state.keuzes.filter((k) => SITUATIONS.find((s) => s.id === k.id)?.opties[k.optie]?.goed).length;
+  const goedeKeuzes = state.keuzes.filter(
+    (k) => SITUATIONS.find((s) => s.id === k.id)?.opties[k.optie]?.goed,
+  ).length;
   if (goedeKeuzes >= 8) badges.add("wijs");
   for (const r of state.eventsGedaan) {
     const b = EVENT_BY_ID[r.id]?.badge;
@@ -245,7 +261,9 @@ export function reducer(state: GameState, action: Action): GameState {
     }
 
     case "START_DAG": {
-      const nodig = new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].item));
+      const nodig = new Set(
+        (SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].item),
+      );
       const compleet = [...nodig].every((i) => state.backpack.includes(i));
       const lessen = SCHEDULE[state.currentDag] ?? [];
       let wijziging: GameState["wijziging"] = null;
@@ -253,7 +271,11 @@ export function reducer(state: GameState, action: Action): GameState {
         const lesIndex = 1 + Math.floor(Math.random() * (lessen.length - 1));
         const oud = SUBJECTS[lessen[lesIndex]!.subject].lokaal;
         const opties = ROOM_LIST.filter((r) => r !== oud);
-        wijziging = { lesIndex, lokaal: opties[Math.floor(Math.random() * opties.length)]!, gecheckt: false };
+        wijziging = {
+          lesIndex,
+          lokaal: opties[Math.floor(Math.random() * opties.length)]!,
+          gecheckt: false,
+        };
       }
       return withBadges({
         ...state,
@@ -293,7 +315,10 @@ export function reducer(state: GameState, action: Action): GameState {
         state.skills,
         goed ? { tijdmanagement: fouten === 0 ? 4 : 2 } : { tijdmanagement: telaat > 5 ? -8 : -5 },
       );
-      skills = bump(skills, itemOk ? { organisatie: 2 } : { organisatie: -5, verantwoordelijkheid: -3 });
+      skills = bump(
+        skills,
+        itemOk ? { organisatie: 2 } : { organisatie: -5, verantwoordelijkheid: -3 },
+      );
       if (fouten > 0) skills = bump(skills, { organisatie: -2 * Math.min(fouten, 3) });
 
       const lessonIndex = state.lessonIndex + 1;
@@ -392,7 +417,10 @@ export function reducer(state: GameState, action: Action): GameState {
         pendingEvent: null,
         skills: bump(state.skills, eventEffect(def, score)),
         xp: state.xp + eventXp(score),
-        eventsGedaan: [...state.eventsGedaan, { id: def.id, dag: state.currentDag, score, punten: action.punten }],
+        eventsGedaan: [
+          ...state.eventsGedaan,
+          { id: def.id, dag: state.currentDag, score, punten: action.punten },
+        ],
         highscores: {
           ...state.highscores,
           [game]: Math.max(state.highscores[game] ?? 0, action.punten),
@@ -413,8 +441,12 @@ export function reducer(state: GameState, action: Action): GameState {
       const record = action.punten > oud;
       return withBadges({
         ...state,
-        highscores: record ? { ...state.highscores, [action.game]: action.punten } : state.highscores,
-        gespeeld: state.gespeeld.includes(action.game) ? state.gespeeld : [...state.gespeeld, action.game],
+        highscores: record
+          ? { ...state.highscores, [action.game]: action.punten }
+          : state.highscores,
+        gespeeld: state.gespeeld.includes(action.game)
+          ? state.gespeeld
+          : [...state.gespeeld, action.game],
         xp: state.xp + (record && state.playerName ? 5 : 0),
       });
     }
@@ -431,7 +463,9 @@ export function reducer(state: GameState, action: Action): GameState {
           ? state.homework.map((h) => (h.id === hw.id ? { ...h, minigame: true } : h))
           : state.homework,
         xp: state.xp + Math.max(0, Math.round(action.xp)),
-        log: action.tekst ? [...state.log, { dag: state.currentDag, tekst: action.tekst, type: "goed" }] : state.log,
+        log: action.tekst
+          ? [...state.log, { dag: state.currentDag, tekst: action.tekst, type: "goed" }]
+          : state.log,
       });
     }
 
@@ -442,7 +476,14 @@ export function reducer(state: GameState, action: Action): GameState {
         wijziging: { ...state.wijziging, gecheckt: true },
         skills: bump(state.skills, { organisatie: 4 }),
         xp: state.xp + 8,
-        log: [...state.log, { dag: state.currentDag, tekst: "Roosterwijziging gezien op de roosterpaal.", type: "goed" }],
+        log: [
+          ...state.log,
+          {
+            dag: state.currentDag,
+            tekst: "Roosterwijziging gezien op de roosterpaal.",
+            type: "goed",
+          },
+        ],
       });
     }
 
@@ -478,7 +519,11 @@ export function reducer(state: GameState, action: Action): GameState {
       const def = HOMEWORK.find((h) => h.id === action.id);
       const hw = state.homework.find((h) => h.id === action.id);
       if (!def || !hw || hw.completedDag !== null) return state;
-      if (action.dag !== null && (action.dag < state.currentDag || action.dag > SCHEDULE.length - 1)) return state;
+      if (
+        action.dag !== null &&
+        (action.dag < state.currentDag || action.dag > SCHEDULE.length - 1)
+      )
+        return state;
       if (hw.plannedDag === action.dag) return state;
       // Planningseffect van een keuze: op tijd +4, te laat −4, niet gepland 0.
       // We verrekenen alleen het verschil met de vorige keuze, zodat steeds
@@ -503,7 +548,8 @@ export function reducer(state: GameState, action: Action): GameState {
       if (!def || !bestaand || bestaand.completedDag !== null) return state;
       const ratio = action.totaal === 0 ? 0 : action.correct / action.totaal;
       const opTijd = state.currentDag <= def.deadlineDag;
-      const zoalsGepland = state.homework.find((h) => h.id === action.id)?.plannedDag === state.currentDag;
+      const zoalsGepland =
+        state.homework.find((h) => h.id === action.id)?.plannedDag === state.currentDag;
       return withBadges({
         ...state,
         homework: state.homework.map((h) =>
@@ -580,7 +626,9 @@ export function reducer(state: GameState, action: Action): GameState {
         totaal: 0,
       }));
 
-      const ongepland = state.homework.filter((h) => h.plannedDag === null && h.completedDag === null);
+      const ongepland = state.homework.filter(
+        (h) => h.plannedDag === null && h.completedDag === null,
+      );
       if (ongepland.length > 0) {
         skills = bump(skills, { planning: -4 });
         log.push({
@@ -640,7 +688,8 @@ export function reducer(state: GameState, action: Action): GameState {
 }
 
 const PHASES: Phase[] = ["setup", "ochtend", "les", "avond", "toets", "klaar"];
-const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
+const isObj = (v: unknown): v is Record<string, unknown> =>
+  typeof v === "object" && v !== null && !Array.isArray(v);
 const isNum = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
 
 /**
@@ -676,7 +725,8 @@ export function laadSave(raw: unknown): GameState | null {
     skills[k] = isNum(v) ? clamp(v) : startSkills[k];
   }
   const homework = st.homework.filter(
-    (h): h is HomeworkState => isObj(h) && typeof h.id === "string" && HOMEWORK.some((d) => d.id === h.id),
+    (h): h is HomeworkState =>
+      isObj(h) && typeof h.id === "string" && HOMEWORK.some((d) => d.id === h.id),
   );
   return {
     ...st,
@@ -686,21 +736,27 @@ export function laadSave(raw: unknown): GameState | null {
     currentDag: Math.max(0, Math.min(SCHEDULE.length - 1, Math.floor(st.currentDag))),
     lessonIndex: Math.max(0, Math.floor(st.lessonIndex)),
     backpack: st.backpack.filter((i): i is string => typeof i === "string"),
-    pendingEvent: typeof st.pendingEvent === "string" && EVENT_BY_ID[st.pendingEvent] ? st.pendingEvent : null,
+    pendingEvent:
+      typeof st.pendingEvent === "string" && EVENT_BY_ID[st.pendingEvent] ? st.pendingEvent : null,
     pendingSituation:
-      typeof st.pendingSituation === "string" && SITUATIONS.some((s) => s.id === st.pendingSituation)
+      typeof st.pendingSituation === "string" &&
+      SITUATIONS.some((s) => s.id === st.pendingSituation)
         ? st.pendingSituation
         : null,
     snelsteRoute: isNum(st.snelsteRoute) ? st.snelsteRoute : null,
     testScore:
-      isObj(st.testScore) && isNum(st.testScore.correct) && isNum(st.testScore.totaal) && st.testScore.totaal > 0
+      isObj(st.testScore) &&
+      isNum(st.testScore.correct) &&
+      isNum(st.testScore.totaal) &&
+      st.testScore.totaal > 0
         ? st.testScore
         : null,
     wijziging:
       isObj(st.wijziging) && isNum(st.wijziging.lesIndex) && typeof st.wijziging.lokaal === "string"
         ? { ...st.wijziging, gecheckt: !!st.wijziging.gecheckt }
         : null,
-    lastResult: isObj(st.lastResult) && typeof st.lastResult.vak === "string" ? st.lastResult : null,
+    lastResult:
+      isObj(st.lastResult) && typeof st.lastResult.vak === "string" ? st.lastResult : null,
   };
 }
 

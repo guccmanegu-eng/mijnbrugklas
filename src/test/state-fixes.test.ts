@@ -103,7 +103,10 @@ describe("opgeslagen spel laden", () => {
       phase: "onzin",
       currentDag: 99,
       skills: { planning: 250, leren: "veel" },
-      homework: [{ id: "bestaat-niet" }, { id: "nl-h3", plannedDag: 0, progress: 0, completedDag: null, correct: 0, totaal: 0 }],
+      homework: [
+        { id: "bestaat-niet" },
+        { id: "nl-h3", plannedDag: 0, progress: 0, completedDag: null, correct: 0, totaal: 0 },
+      ],
       testScore: { correct: 3 },
       pendingEvent: "bestaat-niet",
     })!;

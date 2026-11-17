@@ -4,7 +4,6 @@ import { BigButton, Card, Bar } from "./bits";
 import { cn } from "@/lib/utils";
 import { normaliseer } from "@/lib/game/antwoord";
 
-
 export function Quiz({
   vragen,
   intro,
@@ -101,7 +100,11 @@ export function Quiz({
               toonHint ? (
                 <p className="text-sm text-muted-foreground">💡 {vraag.hint}</p>
               ) : (
-                <button type="button" onClick={() => setToonHint(true)} className="text-sm font-semibold text-brand">
+                <button
+                  type="button"
+                  onClick={() => setToonHint(true)}
+                  className="text-sm font-semibold text-brand"
+                >
                   💡 Hint nodig?
                 </button>
               )
@@ -113,7 +116,9 @@ export function Quiz({
             ) : gecontroleerd === true ? (
               <p className="text-sm font-semibold text-mint">✅ Goed zo!</p>
             ) : null}
-            {beantwoord && vraag.uitleg ? <p className="text-sm text-muted-foreground">{vraag.uitleg}</p> : null}
+            {beantwoord && vraag.uitleg ? (
+              <p className="text-sm text-muted-foreground">{vraag.uitleg}</p>
+            ) : null}
             {beantwoord ? (
               <BigButton type="submit">{laatste ? "Klaar" : knopLabel} →</BigButton>
             ) : (

@@ -109,7 +109,9 @@ function PlanningPagina() {
         <div className="mt-3 space-y-2">
           {DAY_NAMES.map((dag, i) => (
             <div key={dag} className="flex items-center justify-between gap-3 text-sm">
-              <span className={cn("font-semibold", i === state.currentDag && "text-brand")}>{dag}</span>
+              <span className={cn("font-semibold", i === state.currentDag && "text-brand")}>
+                {dag}
+              </span>
               <span className="min-w-0 truncate text-right text-xs text-muted-foreground">
                 {(SCHEDULE[i] ?? []).length} lessen ·{" "}
                 {state.homework.filter((h) => h.plannedDag === i).length} taken gepland

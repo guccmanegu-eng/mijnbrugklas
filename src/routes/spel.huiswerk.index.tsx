@@ -33,7 +33,9 @@ function HuiswerkPagina() {
                   </p>
                   <p className="text-sm text-muted-foreground">{def.titel}</p>
                 </div>
-                <Pill tone={klaar ? "good" : dagenOver < 0 ? "bad" : dagenOver <= 1 ? "warn" : "muted"}>
+                <Pill
+                  tone={klaar ? "good" : dagenOver < 0 ? "bad" : dagenOver <= 1 ? "warn" : "muted"}
+                >
                   {klaar
                     ? "Af ✅"
                     : dagenOver < 0
@@ -47,10 +49,7 @@ function HuiswerkPagina() {
               </div>
 
               <div className="mt-4">
-                <Bar
-                  value={klaar ? 100 : hw.progress}
-                  className={klaar ? "bg-mint" : undefined}
-                />
+                <Bar value={klaar ? 100 : hw.progress} className={klaar ? "bg-mint" : undefined} />
                 <p className="mt-1.5 text-xs text-muted-foreground">
                   {klaar
                     ? `Gemaakt op ${DAY_NAMES[hw.completedDag!]} — ${hw.correct}/${hw.totaal} goed`

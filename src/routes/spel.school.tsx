@@ -19,7 +19,8 @@ export const Route = createFileRoute("/spel/school")({
       { property: "og:title", content: "De school — vind je lokaal in de Brugklas-game" },
       {
         property: "og:description",
-        content: "Wandel door de plattegrond van het Martinuscollege Grootebroek en wees op tijd bij je les.",
+        content:
+          "Wandel door de plattegrond van het Martinuscollege Grootebroek en wees op tijd bij je les.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -58,12 +59,14 @@ function SchoolPagina() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <SectionTitle icon="🗺️" title="De school" sub="Op het Martinuscollege lees je de code zo: A2.21 = vleugel A, tweede verdieping, lokaal 21." />
+      <SectionTitle
+        icon="🗺️"
+        title="De school"
+        sub="Op het Martinuscollege lees je de code zo: A2.21 = vleugel A, tweede verdieping, lokaal 21."
+      />
 
       {state.lastResult ? (
-        <Card
-          className={cn("mb-4", state.lastResult.goed ? "bg-mint/10" : "bg-rose/10")}
-        >
+        <Card className={cn("mb-4", state.lastResult.goed ? "bg-mint/10" : "bg-rose/10")}>
           <p className="text-lg font-bold">
             {state.lastResult.goed
               ? `✅ Op tijd bij ${state.lastResult.vak}`
@@ -86,7 +89,8 @@ function SchoolPagina() {
           </p>
           {state.lastResult.goed && (state.streak ?? 0) >= 2 ? (
             <p className="mt-2 text-sm font-bold text-amber">
-              ⚡ {state.streak}× op rij op tijd!{state.streak >= 3 ? ` +${state.streak * 2} bonus-XP` : " Nog één voor bonus-XP!"}
+              ⚡ {state.streak}× op rij op tijd!
+              {state.streak >= 3 ? ` +${state.streak * 2} bonus-XP` : " Nog één voor bonus-XP!"}
             </p>
           ) : null}
           <BigButton className="mt-4" onClick={() => dispatch({ type: "CLEAR_RESULT" })}>
@@ -98,7 +102,9 @@ function SchoolPagina() {
       {bezig && vak && les && !state.lastResult ? (
         <Card className="mb-4">
           <div className="mb-3 flex items-center justify-between gap-2">
-            <p className="text-sm font-semibold text-muted-foreground">🕐 {fmtTijd(state.minuten)}</p>
+            <p className="text-sm font-semibold text-muted-foreground">
+              🕐 {fmtTijd(state.minuten)}
+            </p>
             <Pill tone="warn">Nog {Math.max(0, les.minuten - state.minuten)} minuten</Pill>
           </div>
           <h2 className="text-xl font-bold">Loop naar {vak.naam}!</h2>
@@ -108,10 +114,14 @@ function SchoolPagina() {
                 🪧 Roosterwijziging! {vak.naam} is verplaatst van {vak.lokaal} naar {gewijzigd}.
               </p>
             ) : gekeken === lesKey ? (
-              <p className="font-semibold text-mint">🪧 Roosterpaal: geen wijziging voor deze les. Gewoon naar {vak.lokaal}!</p>
+              <p className="font-semibold text-mint">
+                🪧 Roosterpaal: geen wijziging voor deze les. Gewoon naar {vak.lokaal}!
+              </p>
             ) : (
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-muted-foreground">🪧 Telefoon zit in je kluisje. Even de roosterpaal in de hal checken?</p>
+                <p className="text-muted-foreground">
+                  🪧 Telefoon zit in je kluisje. Even de roosterpaal in de hal checken?
+                </p>
                 <BigButton
                   variant="soft"
                   className="w-auto px-4 py-2"
@@ -126,8 +136,10 @@ function SchoolPagina() {
             )}
           </div>
           <p className="mt-1 mb-4 text-sm text-muted-foreground">
-            Je bent nu bij <strong>{state.currentLokaal}</strong>. Zoek lokaal <strong>{zichtbaarLokaal}</strong>. De
-            klok loopt zodra je begint — en een verkeerd lokaal binnenlopen kost je tijd! In 3D kun je ook naar een 🪧 roosterpaal in de gang lopen.
+            Je bent nu bij <strong>{state.currentLokaal}</strong>. Zoek lokaal{" "}
+            <strong>{zichtbaarLokaal}</strong>. De klok loopt zodra je begint — en een verkeerd
+            lokaal binnenlopen kost je tijd! In 3D kun je ook naar een 🪧 roosterpaal in de gang
+            lopen.
           </p>
           <div className="mb-3 inline-flex rounded-2xl bg-secondary p-1 text-sm font-bold">
             {(["3d", "2d"] as const).map((w) => (
@@ -137,7 +149,9 @@ function SchoolPagina() {
                 onClick={() => kiesWeergave(w)}
                 className={cn(
                   "rounded-xl px-4 py-1.5 transition-colors",
-                  weergave === w ? "bg-card text-brand shadow-sm" : "text-muted-foreground hover:text-foreground",
+                  weergave === w
+                    ? "bg-card text-brand shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {w === "3d" ? "🧍 3D (zelf lopen)" : "🗺️ Plattegrond"}

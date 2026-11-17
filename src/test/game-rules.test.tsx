@@ -19,11 +19,19 @@ describe("schoolsituaties", () => {
 import { doelLokaal, initialState } from "@/lib/game/state";
 describe("roosterwijziging", () => {
   it("geeft het nieuwe lokaal voor de gewijzigde les", () => {
-    const st = { ...initialState, lessonIndex: 2, wijziging: { lesIndex: 2, lokaal: "C2.06", gecheckt: false } };
+    const st = {
+      ...initialState,
+      lessonIndex: 2,
+      wijziging: { lesIndex: 2, lokaal: "C2.06", gecheckt: false },
+    };
     expect(doelLokaal(st)).toBe("C2.06");
   });
   it("geeft niets voor een andere les", () => {
-    const st = { ...initialState, lessonIndex: 1, wijziging: { lesIndex: 2, lokaal: "C2.06", gecheckt: false } };
+    const st = {
+      ...initialState,
+      lessonIndex: 1,
+      wijziging: { lesIndex: 2, lokaal: "C2.06", gecheckt: false },
+    };
     expect(doelLokaal(st)).toBeNull();
   });
 });

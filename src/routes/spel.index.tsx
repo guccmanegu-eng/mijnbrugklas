@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { LIVE_EVENTS, levelInfo, sterren } from "@/lib/game/events";
 import { Bar, BigButton, Card, Pill } from "@/components/game/bits";
 import { doelLokaal, fmtTijd, useGame, volgendeLes, gemiddeldeScore } from "@/lib/game/state";
-import { BACKPACK_ITEMS, DAY_DATES, DAY_NAMES, HOMEWORK, SCHEDULE, SUBJECTS } from "@/lib/game/data";
+import {
+  BACKPACK_ITEMS,
+  DAY_DATES,
+  DAY_NAMES,
+  HOMEWORK,
+  SCHEDULE,
+  SUBJECTS,
+} from "@/lib/game/data";
 
 export const Route = createFileRoute("/spel/")({
   component: Dashboard,
@@ -16,7 +23,9 @@ function Dashboard() {
   // Na het checken van de roosterpaal weet je het nieuwe lokaal; daarvoor niet.
   const gewijzigd = doelLokaal(state);
   const lokaal = gewijzigd && state.wijziging?.gecheckt ? gewijzigd : vak?.lokaal;
-  const nodigVandaag = [...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].item))];
+  const nodigVandaag = [
+    ...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].item)),
+  ];
   const aantalMist = nodigVandaag.filter((i) => !state.backpack.includes(i)).length;
   const aantalTeVeel = state.backpack.filter(
     (i) => !nodigVandaag.includes(i) && BACKPACK_ITEMS.some((b) => b.id === i && b.id !== "etui"),
@@ -48,14 +57,22 @@ function Dashboard() {
             <h2 className="mt-2 text-xl font-bold">Klaar om te beginnen?</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Pak eerst je rugzak in met de spullen die je vandaag nodig hebt. Vandaag heb je:{" "}
-              {[...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].naam))].join(", ")}.
+              {[
+                ...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].naam)),
+              ].join(", ")}
+              .
             </p>
             {state.backpack.length > 0 ? (
               <p className="mt-2 text-sm font-semibold" aria-live="polite">
                 {aantalMist === 0 ? (
-                  <span className="text-mint">✅ Je rugzak lijkt compleet{aantalTeVeel ? ` (wel ${aantalTeVeel} boek(en) te veel mee)` : ""}.</span>
+                  <span className="text-mint">
+                    ✅ Je rugzak lijkt compleet
+                    {aantalTeVeel ? ` (wel ${aantalTeVeel} boek(en) te veel mee)` : ""}.
+                  </span>
                 ) : (
-                  <span className="text-amber">⚠️ Check je rugzak nog even: er mist iets voor vandaag.</span>
+                  <span className="text-amber">
+                    ⚠️ Check je rugzak nog even: er mist iets voor vandaag.
+                  </span>
                 )}
               </p>
             ) : (
@@ -65,32 +82,39 @@ function Dashboard() {
               <Link to="/spel/rugzak">
                 <BigButton variant="soft">🎒 Rugzak inpakken</BigButton>
               </Link>
-              <BigButton onClick={() => dispatch({ type: "START_DAG" })}>Start schooldag →</BigButton>
+              <BigButton onClick={() => dispatch({ type: "START_DAG" })}>
+                Start schooldag →
+              </BigButton>
             </div>
           </>
         ) : null}
 
         {state.phase === "les" && les && vak ? (
           <>
-            <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Volgende les</p>
+            <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Volgende les
+            </p>
             <h2 className="mt-1 text-2xl font-bold">
               {vak.icon} {vak.naam}
             </h2>
             <p className="text-sm text-muted-foreground">
               Lokaal {lokaal}
               {lokaal !== vak.lokaal ? " (roosterwijziging!)" : ""} · begint om {les.tijd} · les{" "}
-              {state.lessonIndex + 1} van{" "}
-              {SCHEDULE[state.currentDag]?.length ?? 0}
+              {state.lessonIndex + 1} van {SCHEDULE[state.currentDag]?.length ?? 0}
             </p>
             {state.streak >= 2 ? (
-              <p className="mt-1 text-sm font-bold text-amber">⚡ {state.streak}× op rij op tijd — houd het vol!</p>
+              <p className="mt-1 text-sm font-bold text-amber">
+                ⚡ {state.streak}× op rij op tijd — houd het vol!
+              </p>
             ) : null}
             <p className="mt-1 text-sm font-semibold text-brand">
               {les.minuten > state.minuten
                 ? `Begint over ${les.minuten - state.minuten} minuten`
                 : "De les is al begonnen — schiet op!"}
             </p>
-            <p className="mt-1 text-sm text-muted-foreground">Je bent nu bij {state.currentLokaal}.</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Je bent nu bij {state.currentLokaal}.
+            </p>
             <Link to="/spel/school" className="mt-4 block">
               <BigButton>Naar lokaal {lokaal} →</BigButton>
             </Link>
@@ -101,7 +125,8 @@ function Dashboard() {
           <>
             <h2 className="mt-2 text-xl font-bold">🌙 De schooldag zit erop</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Nu is het jouw tijd. Maak huiswerk, plan je taken of leer alvast voor de toets van vrijdag.
+              Nu is het jouw tijd. Maak huiswerk, plan je taken of leer alvast voor de toets van
+              vrijdag.
             </p>
             <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
               <Link to="/spel/huiswerk">
@@ -115,9 +140,13 @@ function Dashboard() {
                 disabled={state.geleerdOpDagen.includes(state.currentDag)}
                 onClick={() => dispatch({ type: "LEREN" })}
               >
-                {state.geleerdOpDagen.includes(state.currentDag) ? "🧠 Al geleerd vandaag" : "🧠 Leren voor de toets"}
+                {state.geleerdOpDagen.includes(state.currentDag)
+                  ? "🧠 Al geleerd vandaag"
+                  : "🧠 Leren voor de toets"}
               </BigButton>
-              <BigButton onClick={() => dispatch({ type: "VOLGENDE_DAG" })}>Naar morgen →</BigButton>
+              <BigButton onClick={() => dispatch({ type: "VOLGENDE_DAG" })}>
+                Naar morgen →
+              </BigButton>
             </div>
           </>
         ) : null}
@@ -205,7 +234,9 @@ function Dashboard() {
               );
             })}
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">Op school kan van alles gebeuren. Blijf alert!</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Op school kan van alles gebeuren. Blijf alert!
+          </p>
         </Card>
         <Link to="/spel/speelhal">
           <Card className="h-full bg-confetti transition-transform hover:-translate-y-0.5">
@@ -213,7 +244,9 @@ function Dashboard() {
             <p className="mt-1 text-2xl font-bold">
               {Object.keys(state.highscores).length} records
             </p>
-            <p className="text-xs text-muted-foreground">Speel alle minigames opnieuw · level {levelInfo(state.xp).level}</p>
+            <p className="text-xs text-muted-foreground">
+              Speel alle minigames opnieuw · level {levelInfo(state.xp).level}
+            </p>
           </Card>
         </Link>
       </div>

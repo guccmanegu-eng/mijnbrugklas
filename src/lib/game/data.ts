@@ -67,7 +67,13 @@ export const BACKPACK_ITEMS: BackpackItem[] = [
 export type Lesson = { tijd: string; minuten: number; subject: SubjectId };
 
 export const DAY_NAMES = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"];
-export const DAY_DATES = ["8 september", "9 september", "10 september", "11 september", "12 september"];
+export const DAY_DATES = [
+  "8 september",
+  "9 september",
+  "10 september",
+  "11 september",
+  "12 september",
+];
 
 const t = (tijd: string, subject: SubjectId): Lesson => {
   const [h = 0, m = 0] = tijd.split(":").map(Number);
@@ -193,9 +199,18 @@ export const MINIGAMES: Record<string, MiniGameDef> = {
     uitleg: "Warm je brein op! Hoeveel sommen los jij op binnen 45 seconden?",
     seconden: 45,
     sommen: [
-      ["7 × 8", "56"], ["12 × 3", "36"], ["81 : 9", "9"], ["−4 + 10", "6"], ["15 − 22", "-7"],
-      ["6 × 7", "42"], ["144 : 12", "12"], ["25% van 80", "20"], ["3²", "9"], ["−3 × 5", "-15"],
-      ["100 − 37", "63"], ["9 × 9", "81"],
+      ["7 × 8", "56"],
+      ["12 × 3", "36"],
+      ["81 : 9", "9"],
+      ["−4 + 10", "6"],
+      ["15 − 22", "-7"],
+      ["6 × 7", "42"],
+      ["144 : 12", "12"],
+      ["25% van 80", "20"],
+      ["3²", "9"],
+      ["−3 × 5", "-15"],
+      ["100 − 37", "63"],
+      ["9 × 9", "81"],
     ],
   },
   "en-woorden": {
@@ -203,8 +218,12 @@ export const MINIGAMES: Record<string, MiniGameDef> = {
     titel: "Word Match",
     uitleg: "Koppel elk Engels woord aan de Nederlandse vertaling.",
     paren: [
-      ["teacher", "docent"], ["classroom", "lokaal"], ["break", "pauze"],
-      ["pencil case", "etui"], ["to forget", "vergeten"], ["test", "toets"],
+      ["teacher", "docent"],
+      ["classroom", "lokaal"],
+      ["break", "pauze"],
+      ["pencil case", "etui"],
+      ["to forget", "vergeten"],
+      ["test", "toets"],
     ],
   },
   "nl-h3": {
@@ -212,8 +231,10 @@ export const MINIGAMES: Record<string, MiniGameDef> = {
     titel: "Zinsdelen-match",
     uitleg: "Koppel elk begrip aan de goede uitleg.",
     paren: [
-      ["persoonsvorm", "verandert bij tijd/getal"], ["onderwerp", "wie of wat + pv"],
-      ["signaalwoord", "toont verband"], ["hoofdgedachte", "belangrijkste zin"],
+      ["persoonsvorm", "verandert bij tijd/getal"],
+      ["onderwerp", "wie of wat + pv"],
+      ["signaalwoord", "toont verband"],
+      ["hoofdgedachte", "belangrijkste zin"],
       ["'t kofschip", "regel voor -te/-de"],
     ],
   },
@@ -234,12 +255,23 @@ export const MINIGAMES: Record<string, MiniGameDef> = {
 MINIGAMES["bio-leven"] = {
   type: "sorteer",
   titel: "Leeft het of niet?",
-  uitleg: "Sleep of tik elk ding naar de goede kant. Let op: iets wat ooit leefde, maar nu niet meer, telt als niet levend!",
+  uitleg:
+    "Sleep of tik elk ding naar de goede kant. Let op: iets wat ooit leefde, maar nu niet meer, telt als niet levend!",
   bakken: ["🌱 Levend", "🪨 Niet levend"],
   seconden: 40,
   items: [
-    ["🐌 Slak", 0], ["🍄 Paddenstoel", 0], ["🌳 Eik", 0], ["🦠 Bacterie", 0], ["🐟 Goudvis", 0], ["🌻 Zonnebloem", 0],
-    ["🪨 Steen", 1], ["🔥 Vuur", 1], ["🤖 Robot", 1], ["🪵 Plank", 1], ["☁️ Wolk", 1], ["🚗 Auto", 1],
+    ["🐌 Slak", 0],
+    ["🍄 Paddenstoel", 0],
+    ["🌳 Eik", 0],
+    ["🦠 Bacterie", 0],
+    ["🐟 Goudvis", 0],
+    ["🌻 Zonnebloem", 0],
+    ["🪨 Steen", 1],
+    ["🔥 Vuur", 1],
+    ["🤖 Robot", 1],
+    ["🪵 Plank", 1],
+    ["☁️ Wolk", 1],
+    ["🚗 Auto", 1],
   ],
 };
 
@@ -248,21 +280,102 @@ export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> =
     intro:
       "Wiskunde brugklas — hoofdstuk Getallen & Verbanden. Typ je antwoord zelf in (geen rekenmachine!). Kommagetallen mag je met een komma of punt schrijven.",
     vragen: [
-      { vraag: "Bereken: 3 + 4 × 5 − 2", open: true, antwoorden: ["21"], hint: "Eerst vermenigvuldigen, dan optellen en aftrekken.", uitleg: "4 × 5 = 20, dus 3 + 20 − 2 = 21." },
-      { vraag: "Bereken: (−6) + 14 − (−3)", open: true, antwoorden: ["11"], hint: "Min een negatief getal is hetzelfde als plus.", uitleg: "−6 + 14 = 8, en 8 + 3 = 11." },
-      { vraag: "Vereenvoudig de breuk 18/24.", open: true, antwoorden: ["3/4"], hint: "Deel teller en noemer door hetzelfde getal.", uitleg: "Deel beide door 6: 18/24 = 3/4." },
-      { vraag: "Bereken: 1/2 + 1/3 (schrijf als breuk)", open: true, antwoorden: ["5/6"], hint: "Maak de noemers gelijk.", uitleg: "3/6 + 2/6 = 5/6." },
-      { vraag: "Een jas kost €60. Je krijgt 15% korting. Hoeveel euro betaal je?", open: true, antwoorden: ["51", "51,00", "€51", "51 euro"], uitleg: "15% van 60 = 9. 60 − 9 = €51." },
-      { vraag: "Los op: 3x + 7 = 25. x = ?", open: true, antwoorden: ["6", "x=6"], uitleg: "3x = 18, dus x = 6." },
-      { vraag: "Een rechthoek is 8 cm lang en 5 cm breed. Wat is de omtrek in cm?", open: true, antwoorden: ["26", "26cm"], uitleg: "2 × 8 + 2 × 5 = 26 cm." },
-      { vraag: "Formule: kosten = 4 × aantal + 3. Wat zijn de kosten bij aantal = 7?", open: true, antwoorden: ["31"], uitleg: "4 × 7 + 3 = 31." },
-      { vraag: "Bereken: −2 × (5 − 9) + 3²", open: true, antwoorden: ["17"], hint: "Haakjes eerst, dan machten, dan vermenigvuldigen.", uitleg: "5 − 9 = −4, −2 × −4 = 8, 3² = 9, dus 8 + 9 = 17." },
-      { vraag: "Bereken: 2/3 × 9/4 (zo eenvoudig mogelijk)", open: true, antwoorden: ["3/2", "1 1/2", "1,5", "1.5"], uitleg: "18/12 = 3/2." },
-      { vraag: "Los op: 5x − 4 = 2x + 11. x = ?", open: true, antwoorden: ["5", "x=5"], hint: "Breng alle x naar één kant.", uitleg: "3x = 15, dus x = 5." },
-      { vraag: "Een fiets kost €480 en wordt 25% duurder. Nieuwe prijs in euro?", open: true, antwoorden: ["600", "€600", "600 euro"], uitleg: "25% van 480 = 120. 480 + 120 = 600." },
-      { vraag: "Een vierkant heeft een oppervlakte van 49 cm². Hoe groot is de omtrek in cm?", open: true, antwoorden: ["28", "28cm"], uitleg: "Zijde = √49 = 7, omtrek = 4 × 7 = 28." },
-      { vraag: "Rond 3,4567 af op twee decimalen.", open: true, antwoorden: ["3,46", "3.46"], uitleg: "Derde decimaal is 6 → naar boven." },
-      { vraag: "Je fietst 18 km in 45 minuten. Hoeveel km/u is dat?", open: true, antwoorden: ["24", "24km/u", "24 km/u"], uitleg: "45 min = 0,75 uur. 18 : 0,75 = 24 km/u." },
+      {
+        vraag: "Bereken: 3 + 4 × 5 − 2",
+        open: true,
+        antwoorden: ["21"],
+        hint: "Eerst vermenigvuldigen, dan optellen en aftrekken.",
+        uitleg: "4 × 5 = 20, dus 3 + 20 − 2 = 21.",
+      },
+      {
+        vraag: "Bereken: (−6) + 14 − (−3)",
+        open: true,
+        antwoorden: ["11"],
+        hint: "Min een negatief getal is hetzelfde als plus.",
+        uitleg: "−6 + 14 = 8, en 8 + 3 = 11.",
+      },
+      {
+        vraag: "Vereenvoudig de breuk 18/24.",
+        open: true,
+        antwoorden: ["3/4"],
+        hint: "Deel teller en noemer door hetzelfde getal.",
+        uitleg: "Deel beide door 6: 18/24 = 3/4.",
+      },
+      {
+        vraag: "Bereken: 1/2 + 1/3 (schrijf als breuk)",
+        open: true,
+        antwoorden: ["5/6"],
+        hint: "Maak de noemers gelijk.",
+        uitleg: "3/6 + 2/6 = 5/6.",
+      },
+      {
+        vraag: "Een jas kost €60. Je krijgt 15% korting. Hoeveel euro betaal je?",
+        open: true,
+        antwoorden: ["51", "51,00", "€51", "51 euro"],
+        uitleg: "15% van 60 = 9. 60 − 9 = €51.",
+      },
+      {
+        vraag: "Los op: 3x + 7 = 25. x = ?",
+        open: true,
+        antwoorden: ["6", "x=6"],
+        uitleg: "3x = 18, dus x = 6.",
+      },
+      {
+        vraag: "Een rechthoek is 8 cm lang en 5 cm breed. Wat is de omtrek in cm?",
+        open: true,
+        antwoorden: ["26", "26cm"],
+        uitleg: "2 × 8 + 2 × 5 = 26 cm.",
+      },
+      {
+        vraag: "Formule: kosten = 4 × aantal + 3. Wat zijn de kosten bij aantal = 7?",
+        open: true,
+        antwoorden: ["31"],
+        uitleg: "4 × 7 + 3 = 31.",
+      },
+      {
+        vraag: "Bereken: −2 × (5 − 9) + 3²",
+        open: true,
+        antwoorden: ["17"],
+        hint: "Haakjes eerst, dan machten, dan vermenigvuldigen.",
+        uitleg: "5 − 9 = −4, −2 × −4 = 8, 3² = 9, dus 8 + 9 = 17.",
+      },
+      {
+        vraag: "Bereken: 2/3 × 9/4 (zo eenvoudig mogelijk)",
+        open: true,
+        antwoorden: ["3/2", "1 1/2", "1,5", "1.5"],
+        uitleg: "18/12 = 3/2.",
+      },
+      {
+        vraag: "Los op: 5x − 4 = 2x + 11. x = ?",
+        open: true,
+        antwoorden: ["5", "x=5"],
+        hint: "Breng alle x naar één kant.",
+        uitleg: "3x = 15, dus x = 5.",
+      },
+      {
+        vraag: "Een fiets kost €480 en wordt 25% duurder. Nieuwe prijs in euro?",
+        open: true,
+        antwoorden: ["600", "€600", "600 euro"],
+        uitleg: "25% van 480 = 120. 480 + 120 = 600.",
+      },
+      {
+        vraag: "Een vierkant heeft een oppervlakte van 49 cm². Hoe groot is de omtrek in cm?",
+        open: true,
+        antwoorden: ["28", "28cm"],
+        uitleg: "Zijde = √49 = 7, omtrek = 4 × 7 = 28.",
+      },
+      {
+        vraag: "Rond 3,4567 af op twee decimalen.",
+        open: true,
+        antwoorden: ["3,46", "3.46"],
+        uitleg: "Derde decimaal is 6 → naar boven.",
+      },
+      {
+        vraag: "Je fietst 18 km in 45 minuten. Hoeveel km/u is dat?",
+        open: true,
+        antwoorden: ["24", "24km/u", "24 km/u"],
+        uitleg: "45 min = 0,75 uur. 18 : 0,75 = 24 km/u.",
+      },
     ],
   },
   "en-woorden": {
@@ -270,39 +383,124 @@ export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> =
       "Engels unit 1 — School life. Vertaal de woorden en vul de zinnen aan. Let op je spelling!",
     vragen: [
       { vraag: "Vertaal naar het Engels: huiswerk", open: true, antwoorden: ["homework"] },
-      { vraag: "Vertaal naar het Engels: rooster", open: true, antwoorden: ["timetable", "schedule"] },
-      { vraag: "Vertaal naar het Engels: vriendelijk", open: true, antwoorden: ["friendly", "kind"] },
-      { vraag: "Vertaal naar het Nederlands: to borrow", open: true, antwoorden: ["lenen", "te lenen"] },
-      { vraag: "Vul in met am / is / are: My friends ___ in class 1B.", open: true, antwoorden: ["are"], uitleg: "Meervoud (my friends) → are." },
-      { vraag: "Vul in met de juiste vorm van 'to have': She ___ a new bike.", open: true, antwoorden: ["has"], uitleg: "He/she/it → has." },
-      { vraag: "Present simple: He ___ (play) football every Saturday.", open: true, antwoorden: ["plays"], uitleg: "He/she/it krijgt een -s." },
+      {
+        vraag: "Vertaal naar het Engels: rooster",
+        open: true,
+        antwoorden: ["timetable", "schedule"],
+      },
+      {
+        vraag: "Vertaal naar het Engels: vriendelijk",
+        open: true,
+        antwoorden: ["friendly", "kind"],
+      },
+      {
+        vraag: "Vertaal naar het Nederlands: to borrow",
+        open: true,
+        antwoorden: ["lenen", "te lenen"],
+      },
+      {
+        vraag: "Vul in met am / is / are: My friends ___ in class 1B.",
+        open: true,
+        antwoorden: ["are"],
+        uitleg: "Meervoud (my friends) → are.",
+      },
+      {
+        vraag: "Vul in met de juiste vorm van 'to have': She ___ a new bike.",
+        open: true,
+        antwoorden: ["has"],
+        uitleg: "He/she/it → has.",
+      },
+      {
+        vraag: "Present simple: He ___ (play) football every Saturday.",
+        open: true,
+        antwoorden: ["plays"],
+        uitleg: "He/she/it krijgt een -s.",
+      },
       {
         vraag: "Welke zin is goed?",
         opties: ["She don't like maths.", "She doesn't like maths.", "She not likes maths."],
         juist: 1,
         uitleg: "Ontkenning bij he/she/it: doesn't + hele werkwoord.",
       },
-      { vraag: "Maak meervoud: one child, two ___", open: true, antwoorden: ["children"], uitleg: "Onregelmatig meervoud." },
-      { vraag: "Vertaal naar het Engels: Ik ben twaalf jaar oud.", open: true, antwoorden: ["i am twelve years old", "i'm twelve years old", "i am 12 years old", "i'm 12 years old", "i am twelve", "i'm twelve"] },
-      { vraag: "Past simple: Yesterday we ___ (go) to the beach.", open: true, antwoorden: ["went"], uitleg: "Go is onregelmatig: go – went – gone." },
-      { vraag: "Maak een vraag: ___ you like pizza? (do/does)", open: true, antwoorden: ["do"], uitleg: "You → do." },
-      { vraag: "Present continuous: Look! The dog ___ (run) in the garden.", open: true, antwoorden: ["is running"], uitleg: "Is + ww-ing, en bij run verdubbel je de n." },
+      {
+        vraag: "Maak meervoud: one child, two ___",
+        open: true,
+        antwoorden: ["children"],
+        uitleg: "Onregelmatig meervoud.",
+      },
+      {
+        vraag: "Vertaal naar het Engels: Ik ben twaalf jaar oud.",
+        open: true,
+        antwoorden: [
+          "i am twelve years old",
+          "i'm twelve years old",
+          "i am 12 years old",
+          "i'm 12 years old",
+          "i am twelve",
+          "i'm twelve",
+        ],
+      },
+      {
+        vraag: "Past simple: Yesterday we ___ (go) to the beach.",
+        open: true,
+        antwoorden: ["went"],
+        uitleg: "Go is onregelmatig: go – went – gone.",
+      },
+      {
+        vraag: "Maak een vraag: ___ you like pizza? (do/does)",
+        open: true,
+        antwoorden: ["do"],
+        uitleg: "You → do.",
+      },
+      {
+        vraag: "Present continuous: Look! The dog ___ (run) in the garden.",
+        open: true,
+        antwoorden: ["is running"],
+        uitleg: "Is + ww-ing, en bij run verdubbel je de n.",
+      },
       {
         vraag: "Welke zin is goed?",
-        opties: ["There is three books on the table.", "There are three books on the table.", "There be three books on the table."],
+        opties: [
+          "There is three books on the table.",
+          "There are three books on the table.",
+          "There be three books on the table.",
+        ],
         juist: 1,
         uitleg: "Meervoud → there are.",
       },
-      { vraag: "Vertaal naar het Engels: Mag ik naar de wc?", open: true, antwoorden: ["may i go to the toilet", "can i go to the toilet", "may i go to the bathroom", "can i go to the bathroom", "may i go to the toilet?", "can i go to the toilet?"] },
-      { vraag: "Vertaal naar het Engels: Mijn telefoon ligt in mijn kluisje.", open: true, antwoorden: ["my phone is in my locker", "my phone is in my locker."] },
+      {
+        vraag: "Vertaal naar het Engels: Mag ik naar de wc?",
+        open: true,
+        antwoorden: [
+          "may i go to the toilet",
+          "can i go to the toilet",
+          "may i go to the bathroom",
+          "can i go to the bathroom",
+          "may i go to the toilet?",
+          "can i go to the toilet?",
+        ],
+      },
+      {
+        vraag: "Vertaal naar het Engels: Mijn telefoon ligt in mijn kluisje.",
+        open: true,
+        antwoorden: ["my phone is in my locker", "my phone is in my locker."],
+      },
     ],
   },
   "nl-h3": {
     intro:
       "Nederlands hoofdstuk 3 — Lezen & taalverzorging.\n\nTekst: 'De eerste week'\nNoor (12) begon deze maand in de brugklas van het Martinuscollege. De eerste dagen verdwaalde ze twee keer: ze stond in A1.14 terwijl haar les in B1.14 was. 'Ik dacht dat de letter niet uitmaakte,' lacht ze. Inmiddels weet ze dat de letter de vleugel is en het eerste cijfer de verdieping. Toch vindt Noor plannen nog het lastigst. Daarom schrijft ze sinds vorige week elke avond in haar agenda wat ze de volgende dag moet meenemen.",
     vragen: [
-      { vraag: "In welk lokaal had Noor les toen ze verdwaalde?", open: true, antwoorden: ["b1.14", "b114"] },
-      { vraag: "Wat betekent het eerste cijfer in een lokaalnummer volgens de tekst?", open: true, antwoorden: ["verdieping", "de verdieping"] },
+      {
+        vraag: "In welk lokaal had Noor les toen ze verdwaalde?",
+        open: true,
+        antwoorden: ["b1.14", "b114"],
+      },
+      {
+        vraag: "Wat betekent het eerste cijfer in een lokaalnummer volgens de tekst?",
+        open: true,
+        antwoorden: ["verdieping", "de verdieping"],
+      },
       {
         vraag: "Wat is de hoofdgedachte van de tekst?",
         opties: [
@@ -312,45 +510,134 @@ export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> =
         ],
         juist: 1,
       },
-      { vraag: "Zoek in de tekst een signaalwoord dat een tegenstelling aangeeft.", open: true, antwoorden: ["toch", "terwijl"], uitleg: "'Toch' en 'terwijl' geven een tegenstelling aan." },
-      { vraag: "Werkwoordspelling: Gisteren ___ (verhuizen) mijn buren.", open: true, antwoorden: ["verhuisden"], uitleg: "Kijk naar het hele werkwoord: verhuizen heeft een z. De z zit niet in 't kofschip → -de(n): verhuisden." },
-      { vraag: "Werkwoordspelling: Hij ___ (worden) morgen dertien.", open: true, antwoorden: ["wordt"], uitleg: "Hij → stam + t: wordt." },
-      { vraag: "Wat is het onderwerp in de zin: 'Na school fietsen Sem en Lotte naar huis.'", open: true, antwoorden: ["sem en lotte"], uitleg: "Wie fietsen? Sem en Lotte." },
-      { vraag: "Wat is de persoonsvorm in: 'Morgen heb ik een toets aardrijkskunde.'", open: true, antwoorden: ["heb"], uitleg: "Maak de zin vragend: heb ik…? → heb." },
-      { vraag: "Werkwoordspelling: Ik ___ (antwoorden) de docent gisteren meteen.", open: true, antwoorden: ["antwoordde"], uitleg: "Stam antwoord eindigt op d → +de: antwoordde." },
-      { vraag: "Werkwoordspelling: ___ jij morgen ook mee? (gaan)", open: true, antwoorden: ["ga"], uitleg: "Jij achter de pv → geen t: ga jij." },
-      { vraag: "Werkwoordspelling: Het pakket werd ___ (bezorgen) bij de buren.", open: true, antwoorden: ["bezorgd"], uitleg: "Voltooid deelwoord: stam bezorg eindigt op een g. Die zit niet in 't kofschip → -d: bezorgd." },
+      {
+        vraag: "Zoek in de tekst een signaalwoord dat een tegenstelling aangeeft.",
+        open: true,
+        antwoorden: ["toch", "terwijl"],
+        uitleg: "'Toch' en 'terwijl' geven een tegenstelling aan.",
+      },
+      {
+        vraag: "Werkwoordspelling: Gisteren ___ (verhuizen) mijn buren.",
+        open: true,
+        antwoorden: ["verhuisden"],
+        uitleg:
+          "Kijk naar het hele werkwoord: verhuizen heeft een z. De z zit niet in 't kofschip → -de(n): verhuisden.",
+      },
+      {
+        vraag: "Werkwoordspelling: Hij ___ (worden) morgen dertien.",
+        open: true,
+        antwoorden: ["wordt"],
+        uitleg: "Hij → stam + t: wordt.",
+      },
+      {
+        vraag: "Wat is het onderwerp in de zin: 'Na school fietsen Sem en Lotte naar huis.'",
+        open: true,
+        antwoorden: ["sem en lotte"],
+        uitleg: "Wie fietsen? Sem en Lotte.",
+      },
+      {
+        vraag: "Wat is de persoonsvorm in: 'Morgen heb ik een toets aardrijkskunde.'",
+        open: true,
+        antwoorden: ["heb"],
+        uitleg: "Maak de zin vragend: heb ik…? → heb.",
+      },
+      {
+        vraag: "Werkwoordspelling: Ik ___ (antwoorden) de docent gisteren meteen.",
+        open: true,
+        antwoorden: ["antwoordde"],
+        uitleg: "Stam antwoord eindigt op d → +de: antwoordde.",
+      },
+      {
+        vraag: "Werkwoordspelling: ___ jij morgen ook mee? (gaan)",
+        open: true,
+        antwoorden: ["ga"],
+        uitleg: "Jij achter de pv → geen t: ga jij.",
+      },
+      {
+        vraag: "Werkwoordspelling: Het pakket werd ___ (bezorgen) bij de buren.",
+        open: true,
+        antwoorden: ["bezorgd"],
+        uitleg:
+          "Voltooid deelwoord: stam bezorg eindigt op een g. Die zit niet in 't kofschip → -d: bezorgd.",
+      },
       {
         vraag: "Welk verband geeft het signaalwoord 'daarom' in de tekst aan?",
         opties: ["Tegenstelling", "Oorzaak/gevolg", "Opsomming", "Tijd"],
         juist: 1,
         uitleg: "Ze vindt plannen lastig → daarom (gevolg) schrijft ze in haar agenda.",
       },
-      { vraag: "Wat is het lijdend voorwerp in: 'Noor schrijft haar huiswerk in haar agenda.'", open: true, antwoorden: ["haar huiswerk"], uitleg: "Wat schrijft Noor? Haar huiswerk." },
+      {
+        vraag: "Wat is het lijdend voorwerp in: 'Noor schrijft haar huiswerk in haar agenda.'",
+        open: true,
+        antwoorden: ["haar huiswerk"],
+        uitleg: "Wat schrijft Noor? Haar huiswerk.",
+      },
     ],
   },
   "gs-presentatie": {
     intro:
       "Geschiedenis — Tijdvak 3 & 4: Monniken, ridders en steden (500–1500).\n\nIn de vroege middeleeuwen leefden de meeste mensen als boer op het platteland. Het leenstelsel bepaalde wie de macht had: de koning gaf land in leen aan edelen, en zij gaven een deel door aan ridders. In ruil moesten ze trouw zijn en meevechten. Horigen werkten op het land van de heer en mochten niet zomaar vertrekken. Vanaf ongeveer 1000 groeide de handel. Steden kregen stadsrechten, zoals het recht om een muur te bouwen en markt te houden. Ook in West-Friesland ontstonden steden: Grootebroek kreeg in 1364 stadsrechten.",
     vragen: [
-      { vraag: "Hoe heet het systeem waarbij land werd uitgeleend in ruil voor trouw?", open: true, antwoorden: ["leenstelsel", "het leenstelsel"] },
-      { vraag: "Hoe noem je boeren die op het land van de heer werkten en niet zomaar weg mochten?", open: true, antwoorden: ["horigen", "horige"] },
-      { vraag: "Noem één stadsrecht uit de tekst.", open: true, antwoorden: ["muur", "muur bouwen", "markt", "markt houden", "marktrecht", "een muur bouwen", "markt houden"] },
+      {
+        vraag: "Hoe heet het systeem waarbij land werd uitgeleend in ruil voor trouw?",
+        open: true,
+        antwoorden: ["leenstelsel", "het leenstelsel"],
+      },
+      {
+        vraag: "Hoe noem je boeren die op het land van de heer werkten en niet zomaar weg mochten?",
+        open: true,
+        antwoorden: ["horigen", "horige"],
+      },
+      {
+        vraag: "Noem één stadsrecht uit de tekst.",
+        open: true,
+        antwoorden: [
+          "muur",
+          "muur bouwen",
+          "markt",
+          "markt houden",
+          "marktrecht",
+          "een muur bouwen",
+          "markt houden",
+        ],
+      },
       { vraag: "In welk jaar kreeg Grootebroek stadsrechten?", open: true, antwoorden: ["1364"] },
       {
         vraag: "Waarom groeiden steden vanaf ongeveer het jaar 1000?",
-        opties: ["Door de groei van de handel", "Omdat ridders er gingen wonen", "Omdat boeren geen land meer hadden"],
+        opties: [
+          "Door de groei van de handel",
+          "Omdat ridders er gingen wonen",
+          "Omdat boeren geen land meer hadden",
+        ],
         juist: 0,
       },
-      { vraag: "In welke eeuw valt het jaar 1364?", open: true, antwoorden: ["14", "14e", "14de", "veertiende", "14e eeuw", "veertiende eeuw"], uitleg: "1301–1400 is de 14e eeuw." },
-      { vraag: "Welk tijdvak hoort bij 'monniken en ridders' (500–1000)? Typ het nummer.", open: true, antwoorden: ["3", "tijdvak 3"] },
+      {
+        vraag: "In welke eeuw valt het jaar 1364?",
+        open: true,
+        antwoorden: ["14", "14e", "14de", "veertiende", "14e eeuw", "veertiende eeuw"],
+        uitleg: "1301–1400 is de 14e eeuw.",
+      },
+      {
+        vraag: "Welk tijdvak hoort bij 'monniken en ridders' (500–1000)? Typ het nummer.",
+        open: true,
+        antwoorden: ["3", "tijdvak 3"],
+      },
       {
         vraag: "Wat kregen horigen van de heer in ruil voor hun werk?",
         opties: ["Bescherming en een stuk grond", "Een salaris in geld", "Stadsrechten"],
         juist: 0,
       },
-      { vraag: "Hoe heet het gebied rond Grootebroek, waar ook het Martinuscollege staat?", open: true, antwoorden: ["west-friesland", "westfriesland", "west friesland"] },
-      { vraag: "Hoeveel jaar geleden kreeg Grootebroek stadsrechten (reken vanaf 2026)?", open: true, antwoorden: ["662"], uitleg: "2026 − 1364 = 662." },
+      {
+        vraag: "Hoe heet het gebied rond Grootebroek, waar ook het Martinuscollege staat?",
+        open: true,
+        antwoorden: ["west-friesland", "westfriesland", "west friesland"],
+      },
+      {
+        vraag: "Hoeveel jaar geleden kreeg Grootebroek stadsrechten (reken vanaf 2026)?",
+        open: true,
+        antwoorden: ["662"],
+        uitleg: "2026 − 1364 = 662.",
+      },
     ],
   },
 };
@@ -359,8 +646,16 @@ EXERCISES["bio-leven"] = {
   intro:
     "Biologie hoofdstuk 1 — Organismen.\n\nAlles wat leeft noemen we een organisme. Organismen hebben levenskenmerken: ze groeien, planten zich voort, nemen voedsel op, scheiden afvalstoffen uit, reageren op prikkels, bewegen en ademen. Alle organismen zijn opgebouwd uit cellen. Een plantencel heeft, anders dan een dierlijke cel, een celwand, bladgroenkorrels en een grote vacuole.",
   vragen: [
-    { vraag: "Hoe noem je alles wat leeft?", open: true, antwoorden: ["organisme", "organismen", "een organisme"] },
-    { vraag: "Waaruit zijn alle organismen opgebouwd?", open: true, antwoorden: ["cellen", "cel", "uit cellen"] },
+    {
+      vraag: "Hoe noem je alles wat leeft?",
+      open: true,
+      antwoorden: ["organisme", "organismen", "een organisme"],
+    },
+    {
+      vraag: "Waaruit zijn alle organismen opgebouwd?",
+      open: true,
+      antwoorden: ["cellen", "cel", "uit cellen"],
+    },
     {
       vraag: "Welke is géén levenskenmerk?",
       opties: ["Groeien", "Reageren op prikkels", "Kunnen praten", "Voortplanten"],
@@ -373,21 +668,38 @@ EXERCISES["bio-leven"] = {
       juist: 1,
       uitleg: "Celwand, bladgroenkorrels en een grote vacuole zijn typisch voor planten.",
     },
-    { vraag: "Een plant groeit naar het licht toe. Welk levenskenmerk is dat?", open: true, antwoorden: ["reageren op prikkels", "reageren op een prikkel", "reageren", "prikkels"], uitleg: "Licht is een prikkel; de plant reageert erop." },
-    { vraag: "In welke delen van een plantencel wordt bladgroen gemaakt? (bladgroen...)", open: true, antwoorden: ["bladgroenkorrels", "bladgroenkorrel", "chloroplasten"] },
+    {
+      vraag: "Een plant groeit naar het licht toe. Welk levenskenmerk is dat?",
+      open: true,
+      antwoorden: ["reageren op prikkels", "reageren op een prikkel", "reageren", "prikkels"],
+      uitleg: "Licht is een prikkel; de plant reageert erop.",
+    },
+    {
+      vraag: "In welke delen van een plantencel wordt bladgroen gemaakt? (bladgroen...)",
+      open: true,
+      antwoorden: ["bladgroenkorrels", "bladgroenkorrel", "chloroplasten"],
+    },
     {
       vraag: "Is een dood blad op de grond een organisme?",
       opties: ["Ja, het was ooit levend", "Nee, het leeft niet meer", "Alleen in de zomer"],
       juist: 1,
       uitleg: "Het blad was deel van een organisme, maar leeft nu niet meer.",
     },
-    { vraag: "Welk instrument gebruik je om cellen te bekijken?", open: true, antwoorden: ["microscoop", "een microscoop", "de microscoop"] },
+    {
+      vraag: "Welk instrument gebruik je om cellen te bekijken?",
+      open: true,
+      antwoorden: ["microscoop", "een microscoop", "de microscoop"],
+    },
     {
       vraag: "Welk deel van de cel bestuurt alles wat er in de cel gebeurt?",
       opties: ["Vacuole", "Celkern", "Celwand"],
       juist: 1,
     },
-    { vraag: "Hoeveel levenskenmerken staan er in de tekst?", open: true, antwoorden: ["7", "zeven"] },
+    {
+      vraag: "Hoeveel levenskenmerken staan er in de tekst?",
+      open: true,
+      antwoorden: ["7", "zeven"],
+    },
   ],
 };
 
@@ -438,7 +750,8 @@ export const SITUATIONS: Situation[] = [
       },
       {
         label: "Ik vertel de docent eerlijk wat er is gebeurd.",
-        feedback: "Goed! Eerlijk zijn levert bijna altijd hulp op en je kunt een nieuwe afspraak maken.",
+        feedback:
+          "Goed! Eerlijk zijn levert bijna altijd hulp op en je kunt een nieuwe afspraak maken.",
         goed: true,
         effect: { verantwoordelijkheid: 8, zelfstandigheid: 4 },
       },
@@ -620,7 +933,8 @@ export const SITUATIONS: Situation[] = [
       },
       {
         label: "De plattegrond bekijken en de letter van het gebouw volgen.",
-        feedback: "Goed! Op het Martinuscollege zegt de code alles: C1.03 is vleugel C, eerste verdieping, lokaal 03.",
+        feedback:
+          "Goed! Op het Martinuscollege zegt de code alles: C1.03 is vleugel C, eerste verdieping, lokaal 03.",
         goed: true,
         effect: { zelfstandigheid: 7, tijdmanagement: 5 },
       },
@@ -636,11 +950,28 @@ export const SITUATIONS: Situation[] = [
     id: "s9",
     icon: "📵",
     titel: "Telefoonvrije school",
-    vraag: "Het Martinuscollege is telefoonvrij. Je krijgt in de pauze een appje binnen. Wat doe je?",
+    vraag:
+      "Het Martinuscollege is telefoonvrij. Je krijgt in de pauze een appje binnen. Wat doe je?",
     opties: [
-      { label: "Even stiekem kijken op de wc.", feedback: "Wordt je gesnapt, dan ben je je telefoon kwijt tot het eind van de dag. En je pauze was ook niet echt pauze.", goed: false, effect: { verantwoordelijkheid: -8 } },
-      { label: "Telefoon uit laten in mijn kluisje en na school pas kijken.", feedback: "Top! Het appje kan wachten. Je pauze is voor kletsen, eten en even bijkomen.", goed: true, effect: { verantwoordelijkheid: 8, zelfstandigheid: 4 } },
-      { label: "Een klasgenoot vragen of ik zijn telefoon even mag lenen.", feedback: "Dan breek je samen de regel. Ook voor hem gaat dat mis.", goed: false, effect: { verantwoordelijkheid: -6, organisatie: -2 } },
+      {
+        label: "Even stiekem kijken op de wc.",
+        feedback:
+          "Wordt je gesnapt, dan ben je je telefoon kwijt tot het eind van de dag. En je pauze was ook niet echt pauze.",
+        goed: false,
+        effect: { verantwoordelijkheid: -8 },
+      },
+      {
+        label: "Telefoon uit laten in mijn kluisje en na school pas kijken.",
+        feedback: "Top! Het appje kan wachten. Je pauze is voor kletsen, eten en even bijkomen.",
+        goed: true,
+        effect: { verantwoordelijkheid: 8, zelfstandigheid: 4 },
+      },
+      {
+        label: "Een klasgenoot vragen of ik zijn telefoon even mag lenen.",
+        feedback: "Dan breek je samen de regel. Ook voor hem gaat dat mis.",
+        goed: false,
+        effect: { verantwoordelijkheid: -6, organisatie: -2 },
+      },
     ],
   },
   {
@@ -649,9 +980,26 @@ export const SITUATIONS: Situation[] = [
     titel: "Roosterwijziging",
     vraag: "Je loopt naar wiskunde, maar op de roosterpaal in de hal staat iets rood. Wat doe je?",
     opties: [
-      { label: "Negeren, ik weet mijn rooster toch al.", feedback: "Juist rode meldingen zijn wijzigingen: ander lokaal of uitval. Nu sta je voor een lege deur.", goed: false, effect: { organisatie: -6, tijdmanagement: -4 } },
-      { label: "Bij de roosterpaal checken wat er veranderd is.", feedback: "Goed zo! Omdat er geen telefoons zijn, zijn de roosterpalen je beste vriend. Elke ochtend en elke pauze even kijken.", goed: true, effect: { organisatie: 8, zelfstandigheid: 5 } },
-      { label: "Mijn telefoon pakken om het rooster te checken.", feedback: "Telefoon blijft weg op school. Daarvoor staan juist de roosterpalen in de hal.", goed: false, effect: { verantwoordelijkheid: -5 } },
+      {
+        label: "Negeren, ik weet mijn rooster toch al.",
+        feedback:
+          "Juist rode meldingen zijn wijzigingen: ander lokaal of uitval. Nu sta je voor een lege deur.",
+        goed: false,
+        effect: { organisatie: -6, tijdmanagement: -4 },
+      },
+      {
+        label: "Bij de roosterpaal checken wat er veranderd is.",
+        feedback:
+          "Goed zo! Omdat er geen telefoons zijn, zijn de roosterpalen je beste vriend. Elke ochtend en elke pauze even kijken.",
+        goed: true,
+        effect: { organisatie: 8, zelfstandigheid: 5 },
+      },
+      {
+        label: "Mijn telefoon pakken om het rooster te checken.",
+        feedback: "Telefoon blijft weg op school. Daarvoor staan juist de roosterpalen in de hal.",
+        goed: false,
+        effect: { verantwoordelijkheid: -5 },
+      },
     ],
   },
   {
@@ -660,9 +1008,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Tussenuur",
     vraag: "Je les valt uit en je hebt een tussenuur. Wat doe je?",
     opties: [
-      { label: "In de aula of mediatheek alvast huiswerk maken.", feedback: "Slim! Dan heb je vanavond meer vrije tijd.", goed: true, effect: { planning: 7, tijdmanagement: 5 } },
-      { label: "Rondhangen en wachten tot het voorbij is.", feedback: "Kan, maar zonde van een gratis uur.", goed: false, effect: { tijdmanagement: -3 } },
-      { label: "Naar het winkelcentrum lopen en te laat terugkomen.", feedback: "Brugklassers mogen meestal niet zomaar van het terrein. En te laat komen telt mee.", goed: false, effect: { verantwoordelijkheid: -8, tijdmanagement: -5 } },
+      {
+        label: "In de aula of mediatheek alvast huiswerk maken.",
+        feedback: "Slim! Dan heb je vanavond meer vrije tijd.",
+        goed: true,
+        effect: { planning: 7, tijdmanagement: 5 },
+      },
+      {
+        label: "Rondhangen en wachten tot het voorbij is.",
+        feedback: "Kan, maar zonde van een gratis uur.",
+        goed: false,
+        effect: { tijdmanagement: -3 },
+      },
+      {
+        label: "Naar het winkelcentrum lopen en te laat terugkomen.",
+        feedback:
+          "Brugklassers mogen meestal niet zomaar van het terrein. En te laat komen telt mee.",
+        goed: false,
+        effect: { verantwoordelijkheid: -8, tijdmanagement: -5 },
+      },
     ],
   },
   {
@@ -671,9 +1035,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Kluisje-code vergeten",
     vraag: "Je kluisje gaat niet open en je boeken liggen erin. Wat doe je?",
     opties: [
-      { label: "Naar de conciërge gaan.", feedback: "Precies. De conciërge helpt je hier elke dag mee. Schrijf de code daarna in je agenda.", goed: true, effect: { zelfstandigheid: 6, organisatie: 4 } },
-      { label: "Er net zo lang aan trekken tot hij opengaat.", feedback: "Dan maak je hem kapot, en dat moet je zelf betalen.", goed: false, effect: { verantwoordelijkheid: -6 } },
-      { label: "Zonder boeken naar de les gaan en niets zeggen.", feedback: "Even melden bij de docent is beter. Dan weet hij waarom.", goed: false, effect: { organisatie: -5 } },
+      {
+        label: "Naar de conciërge gaan.",
+        feedback:
+          "Precies. De conciërge helpt je hier elke dag mee. Schrijf de code daarna in je agenda.",
+        goed: true,
+        effect: { zelfstandigheid: 6, organisatie: 4 },
+      },
+      {
+        label: "Er net zo lang aan trekken tot hij opengaat.",
+        feedback: "Dan maak je hem kapot, en dat moet je zelf betalen.",
+        goed: false,
+        effect: { verantwoordelijkheid: -6 },
+      },
+      {
+        label: "Zonder boeken naar de les gaan en niets zeggen.",
+        feedback: "Even melden bij de docent is beter. Dan weet hij waarom.",
+        goed: false,
+        effect: { organisatie: -5 },
+      },
     ],
   },
   {
@@ -682,9 +1062,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Een onvoldoende",
     vraag: "Je ziet in Magister een 4,8 voor je eerste toets. Wat doe je?",
     opties: [
-      { label: "Kijken welke vragen fout gingen en het vragen aan de docent.", feedback: "Sterk! Van fouten leer je het meest. Volgende keer weet je waar je op moet letten.", goed: true, effect: { leren: 8, zelfstandigheid: 5 } },
-      { label: "Het verstoppen voor mijn ouders.", feedback: "Ze zien het toch in Magister. En samen een plan maken helpt juist.", goed: false, effect: { verantwoordelijkheid: -7 } },
-      { label: "Denken: ik ben gewoon slecht in dit vak.", feedback: "Eén cijfer zegt weinig. Andere leermethode proberen werkt beter dan opgeven.", goed: false, effect: { leren: -5, zelfstandigheid: -3 } },
+      {
+        label: "Kijken welke vragen fout gingen en het vragen aan de docent.",
+        feedback:
+          "Sterk! Van fouten leer je het meest. Volgende keer weet je waar je op moet letten.",
+        goed: true,
+        effect: { leren: 8, zelfstandigheid: 5 },
+      },
+      {
+        label: "Het verstoppen voor mijn ouders.",
+        feedback: "Ze zien het toch in Magister. En samen een plan maken helpt juist.",
+        goed: false,
+        effect: { verantwoordelijkheid: -7 },
+      },
+      {
+        label: "Denken: ik ben gewoon slecht in dit vak.",
+        feedback: "Eén cijfer zegt weinig. Andere leermethode proberen werkt beter dan opgeven.",
+        goed: false,
+        effect: { leren: -5, zelfstandigheid: -3 },
+      },
     ],
   },
   {
@@ -693,9 +1089,24 @@ export const SITUATIONS: Situation[] = [
     titel: "Lekke band",
     vraag: "Je band is lek en je bent al laat. Wat doe je?",
     opties: [
-      { label: "Een ouder bellen of de school laten weten dat je later komt.", feedback: "Netjes. Als je het meldt, is te laat komen geen probleem.", goed: true, effect: { verantwoordelijkheid: 7, zelfstandigheid: 3 } },
-      { label: "Lekker thuisblijven.", feedback: "Zonder melding is dat ongeoorloofd verzuim.", goed: false, effect: { verantwoordelijkheid: -10 } },
-      { label: "Lopen en niets melden.", feedback: "Je komt wel, maar je moet je wel melden bij de receptie.", goed: false, effect: { tijdmanagement: -4, organisatie: -2 } },
+      {
+        label: "Een ouder bellen of de school laten weten dat je later komt.",
+        feedback: "Netjes. Als je het meldt, is te laat komen geen probleem.",
+        goed: true,
+        effect: { verantwoordelijkheid: 7, zelfstandigheid: 3 },
+      },
+      {
+        label: "Lekker thuisblijven.",
+        feedback: "Zonder melding is dat ongeoorloofd verzuim.",
+        goed: false,
+        effect: { verantwoordelijkheid: -10 },
+      },
+      {
+        label: "Lopen en niets melden.",
+        feedback: "Je komt wel, maar je moet je wel melden bij de receptie.",
+        goed: false,
+        effect: { tijdmanagement: -4, organisatie: -2 },
+      },
     ],
   },
   {
@@ -704,9 +1115,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Gymspullen vergeten",
     vraag: "Je hebt vandaag gym, maar je gymtas staat nog thuis. Wat doe je?",
     opties: [
-      { label: "Eerlijk melden en vragen wat ik wél kan doen.", feedback: "Goed. Vaak mag je helpen of een vervangende opdracht doen. Zet je gymtas vanavond alvast bij de deur.", goed: true, effect: { verantwoordelijkheid: 6, organisatie: 3 } },
-      { label: "Zeggen dat ik ziek ben.", feedback: "Liegen komt meestal uit. En je mist de les toch.", goed: false, effect: { verantwoordelijkheid: -8 } },
-      { label: "Op sokken meedoen en niks zeggen.", feedback: "Glad en gevaarlijk. Gewoon even melden is beter.", goed: false, effect: { organisatie: -4 } },
+      {
+        label: "Eerlijk melden en vragen wat ik wél kan doen.",
+        feedback:
+          "Goed. Vaak mag je helpen of een vervangende opdracht doen. Zet je gymtas vanavond alvast bij de deur.",
+        goed: true,
+        effect: { verantwoordelijkheid: 6, organisatie: 3 },
+      },
+      {
+        label: "Zeggen dat ik ziek ben.",
+        feedback: "Liegen komt meestal uit. En je mist de les toch.",
+        goed: false,
+        effect: { verantwoordelijkheid: -8 },
+      },
+      {
+        label: "Op sokken meedoen en niks zeggen.",
+        feedback: "Glad en gevaarlijk. Gewoon even melden is beter.",
+        goed: false,
+        effect: { organisatie: -4 },
+      },
     ],
   },
   {
@@ -715,9 +1142,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Iemand wordt gepest",
     vraag: "In de pauze zie je dat een klasgenoot steeds wordt uitgelachen. Wat doe je?",
     opties: [
-      { label: "Het aan de mentor vertellen.", feedback: "Heel goed. Dat is geen klikken, dat is helpen. De mentor kan er echt iets aan doen.", goed: true, effect: { verantwoordelijkheid: 9 } },
-      { label: "Meelachen, anders ben ik straks de volgende.", feedback: "Begrijpelijk gevoel, maar zo wordt het erger voor die klasgenoot.", goed: false, effect: { verantwoordelijkheid: -9 } },
-      { label: "Bij die klasgenoot gaan zitten.", feedback: "Mooi! Een beetje steun helpt al heel veel. Vertel het ook even aan je mentor.", goed: true, effect: { verantwoordelijkheid: 7, zelfstandigheid: 3 } },
+      {
+        label: "Het aan de mentor vertellen.",
+        feedback:
+          "Heel goed. Dat is geen klikken, dat is helpen. De mentor kan er echt iets aan doen.",
+        goed: true,
+        effect: { verantwoordelijkheid: 9 },
+      },
+      {
+        label: "Meelachen, anders ben ik straks de volgende.",
+        feedback: "Begrijpelijk gevoel, maar zo wordt het erger voor die klasgenoot.",
+        goed: false,
+        effect: { verantwoordelijkheid: -9 },
+      },
+      {
+        label: "Bij die klasgenoot gaan zitten.",
+        feedback: "Mooi! Een beetje steun helpt al heel veel. Vertel het ook even aan je mentor.",
+        goed: true,
+        effect: { verantwoordelijkheid: 7, zelfstandigheid: 3 },
+      },
     ],
   },
   {
@@ -726,9 +1169,24 @@ export const SITUATIONS: Situation[] = [
     titel: "Nieuwe game uit",
     vraag: "Vanavond komt een nieuwe game uit, maar morgen heb je een SO. Wat doe je?",
     opties: [
-      { label: "Eerst leren, dan als beloning een uurtje spelen.", feedback: "Perfect! Eerst werk, dan plezier. Zo voelt gamen ook nog beter.", goed: true, effect: { planning: 8, verantwoordelijkheid: 4 } },
-      { label: "De hele avond spelen, leren doe ik in de bus.", feedback: "Tien minuten in de bus is echt te weinig voor een SO.", goed: false, effect: { planning: -7, leren: -4 } },
-      { label: "Gamen en tegelijk leren.", feedback: "Multitasken werkt niet: je onthoudt bijna niks.", goed: false, effect: { leren: -5 } },
+      {
+        label: "Eerst leren, dan als beloning een uurtje spelen.",
+        feedback: "Perfect! Eerst werk, dan plezier. Zo voelt gamen ook nog beter.",
+        goed: true,
+        effect: { planning: 8, verantwoordelijkheid: 4 },
+      },
+      {
+        label: "De hele avond spelen, leren doe ik in de bus.",
+        feedback: "Tien minuten in de bus is echt te weinig voor een SO.",
+        goed: false,
+        effect: { planning: -7, leren: -4 },
+      },
+      {
+        label: "Gamen en tegelijk leren.",
+        feedback: "Multitasken werkt niet: je onthoudt bijna niks.",
+        goed: false,
+        effect: { leren: -5 },
+      },
     ],
   },
   {
@@ -737,9 +1195,25 @@ export const SITUATIONS: Situation[] = [
     titel: "Invaldocent",
     vraag: "Er staat een invaldocent voor de klas en de klas wordt onrustig. Wat doe je?",
     opties: [
-      { label: "Gewoon aan de opdracht werken.", feedback: "Goed bezig! Zo heb je het werk af en blijf je uit de problemen.", goed: true, effect: { zelfstandigheid: 8 } },
-      { label: "Meedoen met de chaos.", feedback: "De invaldocent geeft je naam door, en de opdracht moet alsnog af.", goed: false, effect: { verantwoordelijkheid: -7 } },
-      { label: "Vragen of ik met koptelefoon mag werken.", feedback: "Hm, koptelefoon valt ook onder telefoonvrij. Liever gewoon geconcentreerd werken.", goed: false, effect: { zelfstandigheid: 1 } },
+      {
+        label: "Gewoon aan de opdracht werken.",
+        feedback: "Goed bezig! Zo heb je het werk af en blijf je uit de problemen.",
+        goed: true,
+        effect: { zelfstandigheid: 8 },
+      },
+      {
+        label: "Meedoen met de chaos.",
+        feedback: "De invaldocent geeft je naam door, en de opdracht moet alsnog af.",
+        goed: false,
+        effect: { verantwoordelijkheid: -7 },
+      },
+      {
+        label: "Vragen of ik met koptelefoon mag werken.",
+        feedback:
+          "Hm, koptelefoon valt ook onder telefoonvrij. Liever gewoon geconcentreerd werken.",
+        goed: false,
+        effect: { zelfstandigheid: 1 },
+      },
     ],
   },
 ];
@@ -750,7 +1224,11 @@ export const TEST_QUESTIONS: Question[] = [
   { vraag: "7 × 9 = ?", opties: ["63", "56", "72"], juist: 0 },
   { vraag: "Hoeveel is 30% van 60?", opties: ["18", "20", "24"], juist: 0 },
   { vraag: "Vertaal: 'timetable'", opties: ["rooster", "tafel", "tijdschrift"], juist: 0 },
-  { vraag: "Vertaal: 'to remember'", opties: ["vergeten", "onthouden", "herinneren aan"], juist: 1 },
+  {
+    vraag: "Vertaal: 'to remember'",
+    opties: ["vergeten", "onthouden", "herinneren aan"],
+    juist: 1,
+  },
   {
     vraag: "Wat schrijf je in je agenda?",
     opties: ["Wanneer huiswerk af moet zijn", "Je lievelingsvak", "Je pauzes"],
@@ -758,25 +1236,65 @@ export const TEST_QUESTIONS: Question[] = [
   },
   {
     vraag: "Wat moest een ridder doen in ruil voor zijn stuk land (leen)?",
-    opties: ["Handel drijven voor de koning", "Trouw zijn en meevechten", "Belasting betalen aan de stad"],
+    opties: [
+      "Handel drijven voor de koning",
+      "Trouw zijn en meevechten",
+      "Belasting betalen aan de stad",
+    ],
     juist: 1,
   },
-  { vraag: "Waardoor groeiden steden in de middeleeuwen?", opties: ["Handel en ambachten", "Oorlog", "Kerken"], juist: 0 },
-  { vraag: "Op welke verdieping zit lokaal C1.03?", opties: ["Begane grond", "Eerste verdieping", "Tweede verdieping"], juist: 1 },
-  { vraag: "Wat doe je als je de uitleg niet snapt?", opties: ["Vragen stellen", "Wachten", "Overschrijven"], juist: 0 },
+  {
+    vraag: "Waardoor groeiden steden in de middeleeuwen?",
+    opties: ["Handel en ambachten", "Oorlog", "Kerken"],
+    juist: 0,
+  },
+  {
+    vraag: "Op welke verdieping zit lokaal C1.03?",
+    opties: ["Begane grond", "Eerste verdieping", "Tweede verdieping"],
+    juist: 1,
+  },
+  {
+    vraag: "Wat doe je als je de uitleg niet snapt?",
+    opties: ["Vragen stellen", "Wachten", "Overschrijven"],
+    juist: 0,
+  },
   { vraag: "Los op: 4x + 6 = 30. x = ?", opties: ["6", "9", "4"], juist: 0 },
   { vraag: "Wat is 3/4 − 1/6?", opties: ["7/12", "2/10", "1/2"], juist: 0 },
   { vraag: "Past simple van 'to buy'?", opties: ["buyed", "bought", "brought"], juist: 1 },
-  { vraag: "Welke is goed gespeld?", opties: ["Hij word morgen dertien.", "Hij wordt morgen dertien.", "Hij wort morgen dertien."], juist: 1 },
-  { vraag: "In welke eeuw kreeg Grootebroek stadsrechten?", opties: ["13e eeuw", "14e eeuw", "15e eeuw"], juist: 1 },
-  { vraag: "Waar check je roosterwijzigingen op het Martinuscollege?", opties: ["Op je telefoon in de les", "Op de roosterpalen in de hal", "Nergens, dat hoeft niet"], juist: 1 },
-  { vraag: "Waar blijft je telefoon tijdens schooltijd?", opties: ["In je zak, op stil", "Uit, in je kluisje", "Op tafel, omgedraaid"], juist: 1 },
   {
-    vraag: "Het brandalarm gaat af. Wat doe je?",
-    opties: ["Snel je jas uit je kluisje halen", "Alles laten liggen en de vluchtroute volgen", "Met de lift naar beneden"],
+    vraag: "Welke is goed gespeld?",
+    opties: ["Hij word morgen dertien.", "Hij wordt morgen dertien.", "Hij wort morgen dertien."],
     juist: 1,
   },
-  { vraag: "Wat heeft een plantencel wél en een dierlijke cel niet?", opties: ["Celkern", "Celwand", "Cytoplasma"], juist: 1 },
+  {
+    vraag: "In welke eeuw kreeg Grootebroek stadsrechten?",
+    opties: ["13e eeuw", "14e eeuw", "15e eeuw"],
+    juist: 1,
+  },
+  {
+    vraag: "Waar check je roosterwijzigingen op het Martinuscollege?",
+    opties: ["Op je telefoon in de les", "Op de roosterpalen in de hal", "Nergens, dat hoeft niet"],
+    juist: 1,
+  },
+  {
+    vraag: "Waar blijft je telefoon tijdens schooltijd?",
+    opties: ["In je zak, op stil", "Uit, in je kluisje", "Op tafel, omgedraaid"],
+    juist: 1,
+  },
+  {
+    vraag: "Het brandalarm gaat af. Wat doe je?",
+    opties: [
+      "Snel je jas uit je kluisje halen",
+      "Alles laten liggen en de vluchtroute volgen",
+      "Met de lift naar beneden",
+    ],
+    juist: 1,
+  },
+  {
+    vraag: "Wat heeft een plantencel wél en een dierlijke cel niet?",
+    opties: ["Celkern", "Celwand", "Cytoplasma"],
+    juist: 1,
+  },
   {
     vraag: "Je kluis gaat niet open. Wie helpt je?",
     opties: ["De conciërge", "Niemand, gewoon harder trekken", "De directeur"],
@@ -791,16 +1309,28 @@ export const TEST_QUESTIONS: Question[] = [
 
 export const BADGES: Record<string, { naam: string; icon: string; uitleg: string }> = {
   optijd: { naam: "Altijd op tijd", icon: "⏰", uitleg: "5 lessen op tijd bereikt." },
-  voorbereid: { naam: "Goed voorbereid", icon: "🎒", uitleg: "Nooit een benodigd schoolitem vergeten." },
+  voorbereid: {
+    naam: "Goed voorbereid",
+    icon: "🎒",
+    uitleg: "Nooit een benodigd schoolitem vergeten.",
+  },
   planner: { naam: "Planner", icon: "📅", uitleg: "Alle huiswerkopdrachten op tijd gepland." },
   slim: { naam: "Slim geleerd", icon: "🧠", uitleg: "Goede voorbereiding voor de toets." },
   combo: { naam: "On fire", icon: "⚡", uitleg: "4 lessen achter elkaar op tijd." },
   wijs: { naam: "Wijze keuzes", icon: "🦉", uitleg: "8 goede keuzes bij onverwachte situaties." },
   doorzetter: { naam: "Doorzetter", icon: "🔥", uitleg: "Alle huiswerk van de week afgemaakt." },
-  brandweer: { naam: "Brandweerheld", icon: "🚒", uitleg: "De school snel en veilig verlaten bij het brandalarm." },
+  brandweer: {
+    naam: "Brandweerheld",
+    icon: "🚒",
+    uitleg: "De school snel en veilig verlaten bij het brandalarm.",
+  },
   kluiskraker: { naam: "Kluiskraker", icon: "🔓", uitleg: "Je kluiscode slim teruggevonden." },
   held: { naam: "Alles overleefd", icon: "🦸", uitleg: "Elk live event van de week meegemaakt." },
-  arcade: { naam: "Speelhal-kampioen", icon: "🕹️", uitleg: "5 verschillende spellen gespeeld in de speelhal." },
+  arcade: {
+    naam: "Speelhal-kampioen",
+    icon: "🕹️",
+    uitleg: "5 verschillende spellen gespeeld in de speelhal.",
+  },
   perfect: { naam: "Foutloos", icon: "💯", uitleg: "Een huiswerk-minigame met 3 sterren gehaald." },
   snelheid: { naam: "Gangenraket", icon: "🚀", uitleg: "Een lokaal gevonden binnen 6 seconden." },
 };

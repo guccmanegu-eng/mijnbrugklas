@@ -12,7 +12,10 @@ export const Route = createFileRoute("/")({
         content:
           "Speel een hele schoolweek op het Martinuscollege in Grootebroek: rooster, lokalen als A2.21 en C0.04, huiswerk, planning, toetsen en echte keuzes.",
       },
-      { property: "og:title", content: "Brugklas Martinuscollege — oefen het voordat het echt begint" },
+      {
+        property: "og:title",
+        content: "Brugklas Martinuscollege — oefen het voordat het echt begint",
+      },
       {
         property: "og:description",
         content:
@@ -49,7 +52,8 @@ const STAPPEN = [
   {
     icon: "🔥",
     titel: "Er gebeurt van alles",
-    tekst: "Brandalarm, stroomstoring, een wesp in de klas of een penalty in de pauze. Live events met eigen minigames!",
+    tekst:
+      "Brandalarm, stroomstoring, een wesp in de klas of een penalty in de pauze. Live events met eigen minigames!",
   },
   {
     icon: "🕹️",
@@ -90,13 +94,12 @@ function Home() {
             <Pill tone="warn">🕹️ Spelenderwijs oefenen</Pill>
           </div>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
-            Overleef jij een week op het{" "}
-            <span className="text-brand">Martinuscollege</span>? 🎒
+            Overleef jij een week op het <span className="text-brand">Martinuscollege</span>? 🎒
           </h1>
           <p className="mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Vijf dagen, zeven lesuren, lokalen van A0.02 tot C2.06 en een rugzak die je zélf
-            inpakt. Kom je te laat, vergeet je je boek of plan je slim? Jij beslist — de school
-            fluistert niets voor.
+            Vijf dagen, zeven lesuren, lokalen van A0.02 tot C2.06 en een rugzak die je zélf inpakt.
+            Kom je te laat, vergeet je je boek of plan je slim? Jij beslist — de school fluistert
+            niets voor.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:max-w-md sm:flex-row">
             <Link to="/profiel" className="flex-1">
@@ -112,7 +115,9 @@ function Home() {
         </section>
 
         <section className="mx-auto w-full max-w-5xl px-5 pb-16">
-          <h2 className="text-2xl font-bold sm:text-3xl">Zo ziet jouw week op het Martinus eruit 👀</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            Zo ziet jouw week op het Martinus eruit 👀
+          </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {STAPPEN.map((s) => (
               <Card key={s.titel} className="wiggle-hover h-full animate-pop-in">
@@ -125,7 +130,9 @@ function Home() {
         </section>
 
         <section className="mx-auto w-full max-w-5xl px-5 pb-16">
-          <h2 className="text-2xl font-bold sm:text-3xl">Aan het eind verdien je je Martinus-rapport ⭐</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            Aan het eind verdien je je Martinus-rapport ⭐
+          </h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Je ziet niet alleen of je de week hebt gehaald, maar ook waar je al goed in bent en wat
             je nog kunt oefenen.

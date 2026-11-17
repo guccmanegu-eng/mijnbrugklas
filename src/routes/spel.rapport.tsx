@@ -9,11 +9,13 @@ export const Route = createFileRoute("/spel/rapport")({
 });
 
 const TIPS: Record<SkillId, string> = {
-  planning: "Schrijf huiswerk meteen in je agenda op de dag dat je het gaat maken, niet op de deadline.",
+  planning:
+    "Schrijf huiswerk meteen in je agenda op de dag dat je het gaat maken, niet op de deadline.",
   tijdmanagement: "Kijk in de pauze alvast waar je volgende lokaal is, dan hoef je niet te rennen.",
   organisatie: "Pak 's avonds je rugzak in met het rooster van morgen ernaast.",
   leren: "Leer liever drie keer twintig minuten dan één keer een uur.",
-  zelfstandigheid: "Steek je hand op als je iets niet snapt — dat is precies waar docenten voor zijn.",
+  zelfstandigheid:
+    "Steek je hand op als je iets niet snapt — dat is precies waar docenten voor zijn.",
   verantwoordelijkheid: "Ging er iets mis? Vertel het eerlijk en maak een nieuwe afspraak.",
 };
 
@@ -63,9 +65,15 @@ function RapportPagina() {
               : "Deze week was pittig — en dat is precies waarom je hier oefent."}
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <Pill tone="brand">⭐ {state.xp} XP · level {levelInfo(state.xp).level}</Pill>
-          <Pill tone="good">⏰ {state.lessenOpTijd}/{lessen} lessen op tijd</Pill>
-          <Pill tone="muted">📚 {afgerond}/{state.homework.length} huiswerk af</Pill>
+          <Pill tone="brand">
+            ⭐ {state.xp} XP · level {levelInfo(state.xp).level}
+          </Pill>
+          <Pill tone="good">
+            ⏰ {state.lessenOpTijd}/{lessen} lessen op tijd
+          </Pill>
+          <Pill tone="muted">
+            📚 {afgerond}/{state.homework.length} huiswerk af
+          </Pill>
           {state.testScore ? (
             <Pill tone={state.testScore.correct / state.testScore.totaal >= 0.6 ? "good" : "warn"}>
               📝 Toets {state.testScore.correct}/{state.testScore.totaal}
@@ -95,11 +103,13 @@ function RapportPagina() {
       <Card className="mt-4">
         <p className="text-sm font-bold">💡 Wat gaat al goed</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {SKILL_META[sterkste].icon} {SKILL_META[sterkste].naam} is je sterkste punt ({state.skills[sterkste]}%).
+          {SKILL_META[sterkste].icon} {SKILL_META[sterkste].naam} is je sterkste punt (
+          {state.skills[sterkste]}%).
         </p>
         <p className="mt-4 text-sm font-bold">🎯 Wat je nog kunt oefenen</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {SKILL_META[zwakste].icon} {SKILL_META[zwakste].naam} ({state.skills[zwakste]}%). {TIPS[zwakste]}
+          {SKILL_META[zwakste].icon} {SKILL_META[zwakste].naam} ({state.skills[zwakste]}%).{" "}
+          {TIPS[zwakste]}
         </p>
       </Card>
 
@@ -126,7 +136,9 @@ function RapportPagina() {
       <Card className="mt-4">
         <p className="text-sm font-bold">📢 Live events van deze week</p>
         {state.eventsGedaan.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">Er gebeurde deze week niets bijzonders.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Er gebeurde deze week niets bijzonders.
+          </p>
         ) : (
           <ul className="mt-3 space-y-2 text-sm">
             {state.eventsGedaan.map((r, i) => {
@@ -135,7 +147,8 @@ function RapportPagina() {
               return (
                 <li key={i} className="flex items-center justify-between gap-3">
                   <span className="min-w-0 truncate">
-                    {ev.icon} {ev.titel.replace(/!$/, "")} <span className="text-muted-foreground">· {DAY_NAMES[r.dag]}</span>
+                    {ev.icon} {ev.titel.replace(/!$/, "")}{" "}
+                    <span className="text-muted-foreground">· {DAY_NAMES[r.dag]}</span>
                   </span>
                   <span className="shrink-0">
                     {"⭐".repeat(sterren(r.score))}

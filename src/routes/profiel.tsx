@@ -10,7 +10,10 @@ export const Route = createFileRoute("/profiel")({
       { title: "Jouw profiel — Brugklas" },
       { name: "description", content: "Vul je naam in en kies welke klas je wilt simuleren." },
       { property: "og:title", content: "Jouw profiel — Brugklas" },
-      { property: "og:description", content: "Vul je naam in en kies welke klas je wilt simuleren." },
+      {
+        property: "og:description",
+        content: "Vul je naam in en kies welke klas je wilt simuleren.",
+      },
     ],
   }),
   component: ProfielPagina,
@@ -36,7 +39,11 @@ function ProfielPagina() {
 
   if (!geladen) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-5" role="status" aria-live="polite">
+      <div
+        className="flex min-h-screen items-center justify-center px-5"
+        role="status"
+        aria-live="polite"
+      >
         <p className="animate-pulse text-sm font-semibold text-muted-foreground">🎒 Even laden…</p>
       </div>
     );
@@ -47,11 +54,13 @@ function ProfielPagina() {
       <div className="w-full max-w-md">
         {bezig && !opnieuw && stap === "invullen" ? (
           <Card className="p-6 text-center">
-            <p className="text-5xl" aria-hidden="true">🎒</p>
+            <p className="text-5xl" aria-hidden="true">
+              🎒
+            </p>
             <h1 className="mt-3 text-2xl font-bold">Welkom terug, {state.playerName}!</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Je bent nog bezig met je week (dag {state.currentDag + 1} van 5). Wil je verder spelen of
-              opnieuw beginnen?
+              Je bent nog bezig met je week (dag {state.currentDag + 1} van 5). Wil je verder spelen
+              of opnieuw beginnen?
             </p>
             <BigButton className="mt-6" onClick={() => navigate({ to: "/spel" })}>
               Verder spelen →
@@ -100,7 +109,9 @@ function ProfielPagina() {
                       onClick={() => setKlas(k)}
                       className={cn(
                         "rounded-2xl border-2 px-4 py-3.5 text-left text-sm font-semibold transition-all",
-                        klas === k ? "border-brand bg-brand/8 text-brand" : "border-border hover:bg-accent",
+                        klas === k
+                          ? "border-brand bg-brand/8 text-brand"
+                          : "border-border hover:bg-accent",
                       )}
                     >
                       {klas === k ? "✅ " : ""}
@@ -126,7 +137,9 @@ function ProfielPagina() {
           </Card>
         ) : (
           <Card className="p-7 text-center">
-            <p className="text-5xl" aria-hidden="true">👋</p>
+            <p className="text-5xl" aria-hidden="true">
+              👋
+            </p>
             <h1 className="mt-3 text-2xl font-bold">Hoi, {state.playerName}!</h1>
             <p className="mt-2 text-sm text-muted-foreground">
               Je eerste schoolweek in de brugklas ({state.classType.toLowerCase()}) begint maandag.

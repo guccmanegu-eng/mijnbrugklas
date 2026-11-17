@@ -19,7 +19,15 @@ export function Card({
   );
 }
 
-export function SectionTitle({ icon, title, sub }: { icon?: string | undefined; title: string; sub?: string | undefined }) {
+export function SectionTitle({
+  icon,
+  title,
+  sub,
+}: {
+  icon?: string | undefined;
+  title: string;
+  sub?: string | undefined;
+}) {
   return (
     <div className="mb-5">
       <h1 className="text-2xl font-bold sm:text-3xl">
@@ -57,7 +65,12 @@ export function Pill({
     brand: "bg-brand/12 text-brand",
   };
   return (
-    <span className={cn("inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold", tones[tone])}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold",
+        tones[tone],
+      )}
+    >
       {children}
     </span>
   );

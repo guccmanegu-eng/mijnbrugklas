@@ -19,7 +19,9 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Oeps, dit lokaal bestaat niet</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          Oeps, dit lokaal bestaat niet
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Zelfs op het Martinuscollege is er geen lokaal Z9.99. Loop terug naar de aula.
         </p>
@@ -50,8 +52,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
           Oeps, deze pagina laadde niet
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Er ging iets mis. Probeer het opnieuw of ga terug naar het begin. Je opgeslagen week blijft
-          gewoon bewaard.
+          Er ging iets mis. Probeer het opnieuw of ga terug naar het begin. Je opgeslagen week
+          blijft gewoon bewaard.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button

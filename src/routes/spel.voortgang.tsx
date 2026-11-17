@@ -65,7 +65,11 @@ function VoortgangPagina() {
                   {SUBJECTS[def.subject].icon} {def.titel}
                 </span>
                 <Pill tone={klaar ? "good" : teLaat ? "bad" : "muted"}>
-                  {klaar ? `Af (${DAY_NAMES[hw.completedDag!]})` : teLaat ? "Gemist" : DAY_NAMES[def.deadlineDag]}
+                  {klaar
+                    ? `Af (${DAY_NAMES[hw.completedDag!]})`
+                    : teLaat
+                      ? "Gemist"
+                      : DAY_NAMES[def.deadlineDag]}
                 </Pill>
               </li>
             );
@@ -87,7 +91,11 @@ function VoortgangPagina() {
                   <span
                     className={cn(
                       "mt-1.5 h-2 w-2 shrink-0 rounded-full",
-                      entry.type === "goed" ? "bg-mint" : entry.type === "slecht" ? "bg-rose" : "bg-border",
+                      entry.type === "goed"
+                        ? "bg-mint"
+                        : entry.type === "slecht"
+                          ? "bg-rose"
+                          : "bg-border",
                     )}
                   />
                   <span className="min-w-0">

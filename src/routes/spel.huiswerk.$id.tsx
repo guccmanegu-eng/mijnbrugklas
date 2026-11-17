@@ -54,7 +54,9 @@ function OpdrachtPagina() {
 
       {resultaat ? (
         <Card className="text-center">
-          <p className="text-5xl">{resultaat.totaal > 0 && resultaat.correct / resultaat.totaal >= 0.6 ? "✅" : "💪"}</p>
+          <p className="text-5xl">
+            {resultaat.totaal > 0 && resultaat.correct / resultaat.totaal >= 0.6 ? "✅" : "💪"}
+          </p>
           <h2 className="mt-3 text-2xl font-bold">
             {resultaat.correct} / {resultaat.totaal} goed
           </h2>

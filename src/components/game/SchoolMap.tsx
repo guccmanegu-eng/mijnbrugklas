@@ -70,7 +70,8 @@ export const WALKABLE = new Set<string>();
 for (const y of [4, 12, 20]) for (let x = 1; x <= 25; x++) WALKABLE.add(key(x, y));
 for (const x of [1, 25]) for (let y = 4; y <= 20; y++) WALKABLE.add(key(x, y));
 for (const r of ROOMS) {
-  for (let y = r.y; y < r.y + r.h; y++) for (let x = r.x; x < r.x + r.w; x++) WALKABLE.add(key(x, y));
+  for (let y = r.y; y < r.y + r.h; y++)
+    for (let x = r.x; x < r.x + r.w; x++) WALKABLE.add(key(x, y));
   WALKABLE.add(key(r.doorX, r.doorY));
 }
 
@@ -122,12 +123,28 @@ export type Npc = {
  * Medeleerlingen lopen niet meer tegen je aan: komt de speler dichtbij,
  * dan blijven ze even staan en stappen ze opzij. Geen botsingen meer.
  */
-export function updateNpc(n: Npc, dt: number, spelerX: number, spelerY: number, dichtbij: number, opzij: number) {
+export function updateNpc(
+  n: Npc,
+  dt: number,
+  spelerX: number,
+  spelerY: number,
+  dichtbij: number,
+  opzij: number,
+) {
   const d = Math.hypot(n.x - spelerX, n.y - spelerY);
   if (!n.conc && d < dichtbij) n.wacht = 0.6;
   n.wacht = Math.max(0, (n.wacht ?? 0) - dt);
   // opzij stappen, weg van de speler
-  const doelZij = n.wacht > 0 ? (n.as === "x" ? (spelerY > n.y ? -opzij : opzij) : spelerX > n.x ? -opzij : opzij) : 0;
+  const doelZij =
+    n.wacht > 0
+      ? n.as === "x"
+        ? spelerY > n.y
+          ? -opzij
+          : opzij
+        : spelerX > n.x
+          ? -opzij
+          : opzij
+      : 0;
   n.zij = (n.zij ?? 0) + (doelZij - (n.zij ?? 0)) * Math.min(1, dt * 8);
   if (n.wacht > 0) return d;
   if (n.as === "x") {
@@ -192,14 +209,25 @@ type Props = {
   onStar: () => void;
 };
 
-export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIcon, minutenOver, startLokaal, onArrive, onStar }: Props) {
+export function SchoolMapGame({
+  target: startTarget,
+  echtLokaal,
+  vakNaam,
+  vakIcon,
+  minutenOver,
+  startLokaal,
+  onArrive,
+  onStar,
+}: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sterren, setSterren] = useState(0);
   const [hint, setHint] = useState("➡️");
   const [aangekomen, setAangekomen] = useState<string | null>(null);
   const [target, setTarget] = useState(startTarget);
   const [klok, setKlok] = useState({ min: 0, fouten: 0 });
-  const [bericht, setBericht] = useState<{ tekst: string; tone: "bad" | "warn" | "good" } | null>(null);
+  const [bericht, setBericht] = useState<{ tekst: string; tone: "bad" | "warn" | "good" } | null>(
+    null,
+  );
   const echt = echtLokaal ?? startTarget;
 
   const startRoom = ROOMS.find((r) => r.code === startLokaal);
@@ -209,12 +237,22 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
   const pos = useRef({ x: startX, y: startY });
   const keys = useRef<Set<string>>(new Set());
   const gotStars = useRef<Set<string>>(new Set());
-  const particles = useRef<{ x: number; y: number; vx: number; vy: number; life: number; kleur: string }[]>([]);
+  const particles = useRef<
+    { x: number; y: number; vx: number; vy: number; life: number; kleur: string }[]
+  >([]);
   const done = useRef<string | null>(null);
   const cbs = useRef({ onArrive, onStar });
   cbs.current = { onArrive, onStar };
   const npcs = useRef<Npc[]>(maakNpcs());
-  const run = useRef({ sec: 0, fouten: 0, stun: 0, laatsteKamer: "", rennenStraf: 0, target: startTarget, berichtTijd: 0 });
+  const run = useRef({
+    sec: 0,
+    fouten: 0,
+    stun: 0,
+    laatsteKamer: "",
+    rennenStraf: 0,
+    target: startTarget,
+    berichtTijd: 0,
+  });
   const meld = (tekst: string, tone: "bad" | "warn" | "good") => {
     setBericht({ tekst, tone });
     run.current.berichtTijd = 2.6;
@@ -277,9 +315,13 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
     };
 
     const R = 9; // spelerstraal
-    const isWalk = (px: number, py: number) => WALKABLE.has(key(Math.floor(px / TILE), Math.floor(py / TILE)));
+    const isWalk = (px: number, py: number) =>
+      WALKABLE.has(key(Math.floor(px / TILE), Math.floor(py / TILE)));
     const kanStaan = (px: number, py: number) =>
-      isWalk(px - R, py - R) && isWalk(px + R, py - R) && isWalk(px - R, py + R) && isWalk(px + R, py + R);
+      isWalk(px - R, py - R) &&
+      isWalk(px + R, py - R) &&
+      isWalk(px - R, py + R) &&
+      isWalk(px + R, py + R);
 
     let raf = 0;
     let last = performance.now();
@@ -367,7 +409,12 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
       if (!done.current) {
         let inKamer: RoomDef | null = null;
         for (const r of ROOMS) {
-          if (px > r.x * TILE + 6 && px < (r.x + r.w) * TILE - 6 && py > r.y * TILE + 6 && py < (r.y + r.h) * TILE - 6) {
+          if (
+            px > r.x * TILE + 6 &&
+            px < (r.x + r.w) * TILE - 6 &&
+            py > r.y * TILE + 6 &&
+            py < (r.y + r.h) * TILE - 6
+          ) {
             inKamer = r;
             break;
           }
@@ -407,7 +454,10 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
             rs.target = echt;
             setTarget(echt);
             sndFout();
-            meld(`📝 Leeg lokaal! Briefje op de deur: "Les verplaatst naar ${echt}". (+${STRAF_MIN} min)`, "bad");
+            meld(
+              `📝 Leeg lokaal! Briefje op de deur: "Les verplaatst naar ${echt}". (+${STRAF_MIN} min)`,
+              "bad",
+            );
             terugNaarGang();
           } else {
             rs.fouten++;
@@ -572,13 +622,25 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
         <span
           className={cn(
             "rounded-full px-3 py-1 tabular-nums",
-            minutenOver - klok.min < 0 ? "bg-rose/15 text-rose" : minutenOver - klok.min <= 1 ? "bg-amber/20 text-amber" : "bg-secondary",
+            minutenOver - klok.min < 0
+              ? "bg-rose/15 text-rose"
+              : minutenOver - klok.min <= 1
+                ? "bg-amber/20 text-amber"
+                : "bg-secondary",
           )}
         >
-          {minutenOver - klok.min >= 0 ? `⏱ nog ${minutenOver - klok.min} min` : `⏰ ${klok.min - minutenOver} min te laat!`}
+          {minutenOver - klok.min >= 0
+            ? `⏱ nog ${minutenOver - klok.min} min`
+            : `⏰ ${klok.min - minutenOver} min te laat!`}
         </span>
-        <span className="rounded-full bg-amber/20 px-3 py-1 text-amber">⭐ {sterren}/{STAR_TILES.length}</span>
-        {klok.fouten ? <span className="rounded-full bg-rose/15 px-3 py-1 text-rose">❌ {klok.fouten}× fout</span> : null}
+        <span className="rounded-full bg-amber/20 px-3 py-1 text-amber">
+          ⭐ {sterren}/{STAR_TILES.length}
+        </span>
+        {klok.fouten ? (
+          <span className="rounded-full bg-rose/15 px-3 py-1 text-rose">
+            ❌ {klok.fouten}× fout
+          </span>
+        ) : null}
         {!aangekomen ? (
           <span className="rounded-full bg-brand/12 px-3 py-1 text-brand">Loop {hint}</span>
         ) : (
@@ -588,15 +650,24 @@ export function SchoolMapGame({ target: startTarget, echtLokaal, vakNaam, vakIco
       <p
         className={cn(
           "mb-2 min-h-[1.25rem] text-sm font-semibold",
-          bericht?.tone === "bad" ? "text-rose" : bericht?.tone === "warn" ? "text-amber" : "text-muted-foreground",
+          bericht?.tone === "bad"
+            ? "text-rose"
+            : bericht?.tone === "warn"
+              ? "text-amber"
+              : "text-muted-foreground",
         )}
       >
-        {bericht?.tekst ?? "Elke 3 seconden lopen kost 1 minuut. Een verkeerd lokaal kost extra tijd!"}
+        {bericht?.tekst ??
+          "Elke 3 seconden lopen kost 1 minuut. Een verkeerd lokaal kost extra tijd!"}
       </p>
 
       {/* Speelveld */}
       <div className="overflow-hidden rounded-2xl border-2 border-border">
-        <canvas ref={canvasRef} className="block h-auto w-full" style={{ aspectRatio: `${W} / ${H}` }} />
+        <canvas
+          ref={canvasRef}
+          className="block h-auto w-full"
+          style={{ aspectRatio: `${W} / ${H}` }}
+        />
       </div>
 
       {/* Knoppen voor tablets/telefoons */}
