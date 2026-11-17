@@ -54,7 +54,7 @@ function OpdrachtPagina() {
 
       {resultaat ? (
         <Card className="text-center">
-          <p className="text-5xl">{resultaat.correct / resultaat.totaal >= 0.6 ? "✅" : "💪"}</p>
+          <p className="text-5xl">{resultaat.totaal > 0 && resultaat.correct / resultaat.totaal >= 0.6 ? "✅" : "💪"}</p>
           <h2 className="mt-3 text-2xl font-bold">
             {resultaat.correct} / {resultaat.totaal} goed
           </h2>
@@ -74,7 +74,7 @@ function OpdrachtPagina() {
             <BigButton variant="soft">Terug naar huiswerk</BigButton>
           </Link>
         </Card>
-      ) : minigame && !minigameKlaar ? (
+      ) : minigame && !minigameKlaar && !hw.minigame ? (
         <MiniGame
           game={minigame}
           onKlaar={(r) => {
@@ -83,6 +83,7 @@ function OpdrachtPagina() {
               type: "BONUS_XP",
               xp: Math.round(r.score * 15),
               perfect: n === 3,
+              huiswerk: id,
               tekst: `🎮 Minigame ${minigame.titel}: ${"⭐".repeat(n) || "geen sterren"}.`,
             });
             setMinigameKlaar(true);

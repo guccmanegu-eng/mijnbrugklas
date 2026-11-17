@@ -2,15 +2,8 @@ import { useState } from "react";
 import type { Question } from "@/lib/game/data";
 import { BigButton, Card, Bar } from "./bits";
 import { cn } from "@/lib/utils";
+import { normaliseer } from "@/lib/game/antwoord";
 
-const normaliseer = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[€.!?]/g, (m) => (m === "." ? "," : ""))
-    .replace(/\s+/g, " ")
-    .replace(/\s*([/=])\s*/g, "$1")
-    .replace(/,00$/, "")
-    .trim();
 
 export function Quiz({
   vragen,
@@ -89,6 +82,11 @@ export function Quiz({
           >
             <input
               autoFocus
+              aria-label="Jouw antwoord"
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               value={invoer}
               disabled={beantwoord}
               onChange={(e) => setInvoer(e.target.value)}
@@ -134,6 +132,7 @@ export function Quiz({
                 return (
                   <button
                     key={optie}
+                    type="button"
                     disabled={gekozen !== null}
                     onClick={() => setGekozen(i)}
                     className={cn(

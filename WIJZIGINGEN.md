@@ -1,5 +1,55 @@
 # Wat is er nieuw in de Brugklas-game
 
+## 🛠️ Onderhoudsronde (november 2026): bugs, valsspeel-lekken en inhoud
+
+### Bugs opgelost
+- **Geen "Maak eerst je profiel"-flits meer** bij het herladen: de app wacht tot je opgeslagen week is ingeladen.
+- **Je week wordt niet meer per ongeluk gewist.** Wie al een week bezig is en via de startpagina op
+  "Start de week" klikt, krijgt nu de keuze *verder spelen* of *opnieuw beginnen*.
+- **Dashboard toont het juiste lokaal** na een roosterwijziging die je op de roosterpaal hebt gezien.
+- **Favicon werkte niet** (verwees naar een bestand dat niet bestond).
+- **Kapotte of oude saves** laten de app niet meer crashen: ontbrekende velden worden aangevuld,
+  onzinwaarden hersteld (`laadSave` in `state.tsx`).
+- De toets kiest zijn 12 vragen nu écht willekeurig (eerlijk schudden in plaats van `sort(random)`).
+- Dubbelklikken op "Terug naar school" na een live event telt het event niet meer twee keer.
+
+### Valsspeel-lekken gedicht
+- Huiswerk steeds in- en uitplannen leverde **onbeperkt XP en planningspunten** op. Nu krijg je de
+  XP één keer en telt alleen het verschil tussen je oude en nieuwe keuze.
+- De bonus-minigame van een huiswerkopdracht kon je eindeloos herhalen door de pagina te herladen.
+  Die levert nu één keer XP op (wordt onthouden in je save).
+- Tijdens de schooldag kon je je rugzak nog aanpassen. Nu zit hij dicht zodra de dag begint —
+  zoals in het echt.
+- Hetzelfde huiswerk of de toets kan niet twee keer meetellen.
+
+### Nakijken van open vragen
+- Antwoorden van een iPhone/iPad met "slimme" aanhalingstekens (`I’m`) worden goed gerekend.
+- Het echte minteken (−), een punt aan het eind van een zin en spaties rond `=` en `/` maken niet meer uit.
+- Autocorrectie en automatische hoofdletter staan uit in het antwoordveld.
+
+### Inhoud
+- Twee uitleggen bij werkwoordspelling waren fout ("s niet in 't kofschip" — de s zit er juist wél in).
+  Nu: *verhuizen* → kijk naar de **z**, *bezorgd* → stam eindigt op **g**.
+- Toetsvraag over ridders was dubbelzinnig; nu: "Wat moest een ridder doen in ruil voor zijn leen?"
+- Het boek voor geschiedenis heet nu "Geschiedenisboek" in plaats van "Huiswerkboek".
+- Niveaus bij het profiel: Vmbo basis/kader · Vmbo-tl/mavo · Havo/vwo.
+
+### Kleinere verbeteringen
+- 's Avonds laat de rugzakpagina zien wat je **morgen** nodig hebt.
+- Het dashboard waarschuwt als je rugzak leeg of nog niet compleet is.
+- Profiel: Enter werkt, naam wordt opgeschoond, duidelijke keuze voor je niveau.
+- Foutpagina en 404 helemaal in het Nederlands.
+- Toegankelijkheid: dialogen hebben `role="dialog"`, keuzeknoppen `aria-pressed`/`aria-checked`, labels bij invoervelden.
+
+### Technisch
+- Nieuw: `src/lib/game/antwoord.ts` (nakijken), `src/lib/game/random.ts` (schudden),
+  `src/test/state-fixes.test.ts` (tests voor alle bovenstaande fixes).
+- Nieuw script: `npm run typecheck`.
+- Hele codebase geformatteerd met Prettier, zodat de Prettier-controle in `npm run lint` slaagt.
+- README herschreven: wat de game is, hoe je hem draait en hoe de code in elkaar zit.
+
+---
+
 ## 📢 Live events
 Tijdens de schoolweek gebeurt er zomaar van alles. Elk event heeft een verhaal, regels, een eigen minigame,
 een tip voor "in het echt" en effect op je vaardigheden (beter spelen = beter effect).

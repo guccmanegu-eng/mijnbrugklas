@@ -48,7 +48,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
     icon: "🏛️",
     lokaal: "B0.08",
     item: "hw-boek",
-    itemNaam: "Huiswerkboek",
+    itemNaam: "Geschiedenisboek",
   },
 };
 
@@ -59,7 +59,8 @@ export const BACKPACK_ITEMS: BackpackItem[] = [
   { id: "wi-boek", naam: "Wiskundeboek", icon: "📗" },
   { id: "en-boek", naam: "Engels boek", icon: "📘" },
   { id: "bio-boek", naam: "Biologieboek", icon: "🧪" },
-  { id: "hw-boek", naam: "Huiswerkboek", icon: "📓" },
+  // id blijft "hw-boek" zodat oude opgeslagen rugzakken blijven werken
+  { id: "hw-boek", naam: "Geschiedenisboek", icon: "📓" },
   { id: "etui", naam: "Etui", icon: "✏️" },
 ];
 
@@ -193,7 +194,7 @@ export const MINIGAMES: Record<string, MiniGameDef> = {
     seconden: 45,
     sommen: [
       ["7 × 8", "56"], ["12 × 3", "36"], ["81 : 9", "9"], ["−4 + 10", "6"], ["15 − 22", "-7"],
-      ["6 × 7", "42"], ["144 : 12", "12"], ["25% van 80", "20"], ["3² ", "9"], ["−3 × 5", "-15"],
+      ["6 × 7", "42"], ["144 : 12", "12"], ["25% van 80", "20"], ["3²", "9"], ["−3 × 5", "-15"],
       ["100 − 37", "63"], ["9 × 9", "81"],
     ],
   },
@@ -312,13 +313,13 @@ export const EXERCISES: Record<string, { intro?: string; vragen: Question[] }> =
         juist: 1,
       },
       { vraag: "Zoek in de tekst een signaalwoord dat een tegenstelling aangeeft.", open: true, antwoorden: ["toch", "terwijl"], uitleg: "'Toch' en 'terwijl' geven een tegenstelling aan." },
-      { vraag: "Werkwoordspelling: Gisteren ___ (verhuizen) mijn buren.", open: true, antwoorden: ["verhuisden"], uitleg: "Verhuizen → stam verhuis, 's' niet in 't kofschip → -de(n)." },
+      { vraag: "Werkwoordspelling: Gisteren ___ (verhuizen) mijn buren.", open: true, antwoorden: ["verhuisden"], uitleg: "Kijk naar het hele werkwoord: verhuizen heeft een z. De z zit niet in 't kofschip → -de(n): verhuisden." },
       { vraag: "Werkwoordspelling: Hij ___ (worden) morgen dertien.", open: true, antwoorden: ["wordt"], uitleg: "Hij → stam + t: wordt." },
       { vraag: "Wat is het onderwerp in de zin: 'Na school fietsen Sem en Lotte naar huis.'", open: true, antwoorden: ["sem en lotte"], uitleg: "Wie fietsen? Sem en Lotte." },
       { vraag: "Wat is de persoonsvorm in: 'Morgen heb ik een toets aardrijkskunde.'", open: true, antwoorden: ["heb"], uitleg: "Maak de zin vragend: heb ik…? → heb." },
       { vraag: "Werkwoordspelling: Ik ___ (antwoorden) de docent gisteren meteen.", open: true, antwoorden: ["antwoordde"], uitleg: "Stam antwoord eindigt op d → +de: antwoordde." },
       { vraag: "Werkwoordspelling: ___ jij morgen ook mee? (gaan)", open: true, antwoorden: ["ga"], uitleg: "Jij achter de pv → geen t: ga jij." },
-      { vraag: "Werkwoordspelling: Het pakket werd ___ (bezorgen) bij de buren.", open: true, antwoorden: ["bezorgd"], uitleg: "Voltooid deelwoord, s niet in 't kofschip → -d." },
+      { vraag: "Werkwoordspelling: Het pakket werd ___ (bezorgen) bij de buren.", open: true, antwoorden: ["bezorgd"], uitleg: "Voltooid deelwoord: stam bezorg eindigt op een g. Die zit niet in 't kofschip → -d: bezorgd." },
       {
         vraag: "Welk verband geeft het signaalwoord 'daarom' in de tekst aan?",
         opties: ["Tegenstelling", "Oorzaak/gevolg", "Opsomming", "Tijd"],
@@ -755,7 +756,11 @@ export const TEST_QUESTIONS: Question[] = [
     opties: ["Wanneer huiswerk af moet zijn", "Je lievelingsvak", "Je pauzes"],
     juist: 0,
   },
-  { vraag: "Waar kreeg een ridder land voor?", opties: ["Handel", "Bescherming", "Belasting"], juist: 1 },
+  {
+    vraag: "Wat moest een ridder doen in ruil voor zijn stuk land (leen)?",
+    opties: ["Handel drijven voor de koning", "Trouw zijn en meevechten", "Belasting betalen aan de stad"],
+    juist: 1,
+  },
   { vraag: "Waardoor groeiden steden in de middeleeuwen?", opties: ["Handel en ambachten", "Oorlog", "Kerken"], juist: 0 },
   { vraag: "Op welke verdieping zit lokaal C1.03?", opties: ["Begane grond", "Eerste verdieping", "Tweede verdieping"], juist: 1 },
   { vraag: "Wat doe je als je de uitleg niet snapt?", opties: ["Vragen stellen", "Wachten", "Overschrijven"], juist: 0 },

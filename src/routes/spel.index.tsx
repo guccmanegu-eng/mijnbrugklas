@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LIVE_EVENTS, levelInfo, sterren } from "@/lib/game/events";
 import { Bar, BigButton, Card, Pill } from "@/components/game/bits";
-import { fmtTijd, useGame, volgendeLes, gemiddeldeScore } from "@/lib/game/state";
-import { DAY_DATES, DAY_NAMES, HOMEWORK, SCHEDULE, SUBJECTS } from "@/lib/game/data";
+import { doelLokaal, fmtTijd, useGame, volgendeLes, gemiddeldeScore } from "@/lib/game/state";
+import { BACKPACK_ITEMS, DAY_DATES, DAY_NAMES, HOMEWORK, SCHEDULE, SUBJECTS } from "@/lib/game/data";
 
 export const Route = createFileRoute("/spel/")({
   component: Dashboard,
@@ -13,6 +13,14 @@ function Dashboard() {
   const { state, dispatch } = useGame();
   const les = volgendeLes(state);
   const vak = les ? SUBJECTS[les.subject] : null;
+  // Na het checken van de roosterpaal weet je het nieuwe lokaal; daarvoor niet.
+  const gewijzigd = doelLokaal(state);
+  const lokaal = gewijzigd && state.wijziging?.gecheckt ? gewijzigd : vak?.lokaal;
+  const nodigVandaag = [...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].item))];
+  const aantalMist = nodigVandaag.filter((i) => !state.backpack.includes(i)).length;
+  const aantalTeVeel = state.backpack.filter(
+    (i) => !nodigVandaag.includes(i) && BACKPACK_ITEMS.some((b) => b.id === i && b.id !== "etui"),
+  ).length;
   const afgerond = state.homework.filter((h) => h.completedDag !== null).length;
   const openDeadlines = HOMEWORK.filter((d) =>
     state.homework.some((h) => h.id === d.id && h.completedDag === null),
@@ -42,6 +50,17 @@ function Dashboard() {
               Pak eerst je rugzak in met de spullen die je vandaag nodig hebt. Vandaag heb je:{" "}
               {[...new Set((SCHEDULE[state.currentDag] ?? []).map((l) => SUBJECTS[l.subject].naam))].join(", ")}.
             </p>
+            {state.backpack.length > 0 ? (
+              <p className="mt-2 text-sm font-semibold" aria-live="polite">
+                {aantalMist === 0 ? (
+                  <span className="text-mint">✅ Je rugzak lijkt compleet{aantalTeVeel ? ` (wel ${aantalTeVeel} boek(en) te veel mee)` : ""}.</span>
+                ) : (
+                  <span className="text-amber">⚠️ Check je rugzak nog even: er mist iets voor vandaag.</span>
+                )}
+              </p>
+            ) : (
+              <p className="mt-2 text-sm font-semibold text-amber">⚠️ Je rugzak is nog leeg!</p>
+            )}
             <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
               <Link to="/spel/rugzak">
                 <BigButton variant="soft">🎒 Rugzak inpakken</BigButton>
@@ -58,7 +77,9 @@ function Dashboard() {
               {vak.icon} {vak.naam}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Lokaal {vak.lokaal} · begint om {les.tijd} · les {state.lessonIndex + 1} van{" "}
+              Lokaal {lokaal}
+              {lokaal !== vak.lokaal ? " (roosterwijziging!)" : ""} · begint om {les.tijd} · les{" "}
+              {state.lessonIndex + 1} van{" "}
               {SCHEDULE[state.currentDag]?.length ?? 0}
             </p>
             {state.streak >= 2 ? (
@@ -71,7 +92,7 @@ function Dashboard() {
             </p>
             <p className="mt-1 text-sm text-muted-foreground">Je bent nu bij {state.currentLokaal}.</p>
             <Link to="/spel/school" className="mt-4 block">
-              <BigButton>Naar lokaal {vak.lokaal} →</BigButton>
+              <BigButton>Naar lokaal {lokaal} →</BigButton>
             </Link>
           </>
         ) : null}

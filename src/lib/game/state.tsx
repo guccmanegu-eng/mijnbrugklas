@@ -4,6 +4,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
   type Dispatch,
   type ReactNode,
 } from "react";
@@ -28,6 +29,10 @@ export type HomeworkState = {
   completedDag: number | null;
   correct: number;
   totaal: number;
+  /** XP voor het (op tijd) inplannen is al gegeven. */
+  planXp?: boolean;
+  /** De bonus-minigame van dit huiswerk is al gespeeld. */
+  minigame?: boolean;
 };
 
 export type LogEntry = { dag: number; tekst: string; type: "goed" | "slecht" | "info" };
@@ -153,7 +158,7 @@ export type Action =
   | { type: "EVENT_KLAAR"; id: string; score: number; punten: number }
   | { type: "EVENT_START"; id: string }
   | { type: "SPEELHAL_SCORE"; game: GameId; punten: number }
-  | { type: "BONUS_XP"; xp: number; tekst?: string; perfect?: boolean }
+  | { type: "BONUS_XP"; xp: number; tekst?: string; perfect?: boolean; huiswerk?: string }
   | { type: "HYDRATE"; state: GameState };
 
 const clamp = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
@@ -228,6 +233,8 @@ export function reducer(state: GameState, action: Action): GameState {
       });
 
     case "TOGGLE_ITEM": {
+      // Tijdens de schooldag zit je rugzak dicht: inpakken doe je thuis.
+      if (state.phase === "les") return state;
       const heeft = state.backpack.includes(action.item);
       return {
         ...state,
@@ -373,6 +380,10 @@ export function reducer(state: GameState, action: Action): GameState {
     case "EVENT_KLAAR": {
       const def = EVENT_BY_ID[action.id];
       if (!def) return { ...state, pendingEvent: null };
+      // dubbel klikken mag het event niet twee keer laten tellen
+      if (state.eventsGedaan.some((r) => r.id === def.id && r.dag === state.currentDag)) {
+        return { ...state, pendingEvent: null };
+      }
       const score = Math.max(0, Math.min(1, action.score));
       const goed = score >= 0.5;
       const game = def.game;
@@ -410,9 +421,15 @@ export function reducer(state: GameState, action: Action): GameState {
 
     case "BONUS_XP": {
       const badges = action.perfect ? [...new Set([...state.badges, "perfect"])] : state.badges;
+      const hw = action.huiswerk ? state.homework.find((h) => h.id === action.huiswerk) : undefined;
+      // De bonus-minigame van een huiswerkopdracht levert maar één keer XP op.
+      if (hw?.minigame) return state;
       return withBadges({
         ...state,
         badges,
+        homework: hw
+          ? state.homework.map((h) => (h.id === hw.id ? { ...h, minigame: true } : h))
+          : state.homework,
         xp: state.xp + Math.max(0, Math.round(action.xp)),
         log: action.tekst ? [...state.log, { dag: state.currentDag, tekst: action.tekst, type: "goed" }] : state.log,
       });
@@ -459,21 +476,31 @@ export function reducer(state: GameState, action: Action): GameState {
 
     case "PLAN_HUISWERK": {
       const def = HOMEWORK.find((h) => h.id === action.id);
-      if (!def) return state;
+      const hw = state.homework.find((h) => h.id === action.id);
+      if (!def || !hw || hw.completedDag !== null) return state;
+      if (action.dag !== null && (action.dag < state.currentDag || action.dag > SCHEDULE.length - 1)) return state;
+      if (hw.plannedDag === action.dag) return state;
+      // Planningseffect van een keuze: op tijd +4, te laat −4, niet gepland 0.
+      // We verrekenen alleen het verschil met de vorige keuze, zodat steeds
+      // opnieuw in- en uitplannen geen punten oplevert.
+      const waarde = (dag: number | null) => (dag === null ? 0 : dag <= def.deadlineDag ? 4 : -4);
+      const verschil = waarde(action.dag) - waarde(hw.plannedDag);
       const opTijd = action.dag !== null && action.dag <= def.deadlineDag;
+      const xpErbij = opTijd && !hw.planXp ? 5 : 0;
       return withBadges({
         ...state,
         homework: state.homework.map((h) =>
-          h.id === action.id ? { ...h, plannedDag: action.dag } : h,
+          h.id === action.id ? { ...h, plannedDag: action.dag, planXp: h.planXp || opTijd } : h,
         ),
-        skills: bump(state.skills, action.dag === null ? {} : { planning: opTijd ? 4 : -4 }),
-        xp: state.xp + (opTijd ? 5 : 0),
+        skills: verschil === 0 ? state.skills : bump(state.skills, { planning: verschil }),
+        xp: state.xp + xpErbij,
       });
     }
 
     case "HUISWERK_KLAAR": {
       const def = HOMEWORK.find((h) => h.id === action.id);
-      if (!def) return state;
+      const bestaand = state.homework.find((h) => h.id === action.id);
+      if (!def || !bestaand || bestaand.completedDag !== null) return state;
       const ratio = action.totaal === 0 ? 0 : action.correct / action.totaal;
       const opTijd = state.currentDag <= def.deadlineDag;
       const zoalsGepland = state.homework.find((h) => h.id === action.id)?.plannedDag === state.currentDag;
@@ -583,6 +610,7 @@ export function reducer(state: GameState, action: Action): GameState {
     }
 
     case "TOETS_KLAAR": {
+      if (state.testScore || action.totaal <= 0) return state;
       const ratio = action.correct / action.totaal;
       return withBadges({
         ...state,
@@ -611,35 +639,107 @@ export function reducer(state: GameState, action: Action): GameState {
   }
 }
 
-const GameContext = createContext<{ state: GameState; dispatch: Dispatch<Action> } | null>(null);
+const PHASES: Phase[] = ["setup", "ochtend", "les", "avond", "toets", "klaar"];
+const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
+const isNum = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
+
+/**
+ * Maak van een (mogelijk oude of kapotte) opgeslagen stand een geldige GameState.
+ * Ontbrekende of foute velden krijgen hun standaardwaarde, zodat de app nooit
+ * crasht op een oude save. Geeft null als er niets bruikbaars in zit.
+ */
+export function laadSave(raw: unknown): GameState | null {
+  if (!isObj(raw) || typeof raw["playerName"] !== "string") return null;
+  const basis: GameState = { ...initialState };
+  const uit = { ...basis } as Record<string, unknown>;
+  for (const key of Object.keys(basis) as (keyof GameState)[]) {
+    const waarde = raw[key];
+    const standaard = basis[key];
+    if (waarde === undefined) continue;
+    if (Array.isArray(standaard)) {
+      if (Array.isArray(waarde)) uit[key] = waarde;
+    } else if (typeof standaard === "number") {
+      if (isNum(waarde)) uit[key] = waarde;
+    } else if (typeof standaard === "string") {
+      if (typeof waarde === "string") uit[key] = waarde;
+    } else if (standaard === null) {
+      // velden die null of een object/nummer mogen zijn
+      uit[key] = waarde;
+    } else if (isObj(standaard)) {
+      if (isObj(waarde)) uit[key] = { ...standaard, ...waarde };
+    }
+  }
+  const st = uit as GameState;
+  const skills = { ...startSkills };
+  for (const k of Object.keys(startSkills) as SkillId[]) {
+    const v = st.skills[k];
+    skills[k] = isNum(v) ? clamp(v) : startSkills[k];
+  }
+  const homework = st.homework.filter(
+    (h): h is HomeworkState => isObj(h) && typeof h.id === "string" && HOMEWORK.some((d) => d.id === h.id),
+  );
+  return {
+    ...st,
+    skills,
+    homework,
+    phase: PHASES.includes(st.phase) ? st.phase : "setup",
+    currentDag: Math.max(0, Math.min(SCHEDULE.length - 1, Math.floor(st.currentDag))),
+    lessonIndex: Math.max(0, Math.floor(st.lessonIndex)),
+    backpack: st.backpack.filter((i): i is string => typeof i === "string"),
+    pendingEvent: typeof st.pendingEvent === "string" && EVENT_BY_ID[st.pendingEvent] ? st.pendingEvent : null,
+    pendingSituation:
+      typeof st.pendingSituation === "string" && SITUATIONS.some((s) => s.id === st.pendingSituation)
+        ? st.pendingSituation
+        : null,
+    snelsteRoute: isNum(st.snelsteRoute) ? st.snelsteRoute : null,
+    testScore:
+      isObj(st.testScore) && isNum(st.testScore.correct) && isNum(st.testScore.totaal) && st.testScore.totaal > 0
+        ? st.testScore
+        : null,
+    wijziging:
+      isObj(st.wijziging) && isNum(st.wijziging.lesIndex) && typeof st.wijziging.lokaal === "string"
+        ? { ...st.wijziging, gecheckt: !!st.wijziging.gecheckt }
+        : null,
+    lastResult: isObj(st.lastResult) && typeof st.lastResult.vak === "string" ? st.lastResult : null,
+  };
+}
+
+const GameContext = createContext<{
+  state: GameState;
+  dispatch: Dispatch<Action>;
+  /** true zodra een eventueel opgeslagen spel uit de browser is geladen. */
+  geladen: boolean;
+} | null>(null);
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [geladen, setGeladen] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as GameState;
-        if (parsed && typeof parsed.playerName === "string") {
-          dispatch({ type: "HYDRATE", state: { ...initialState, ...parsed } });
-        }
+        const save = laadSave(JSON.parse(raw));
+        if (save) dispatch({ type: "HYDRATE", state: save });
       }
     } catch {
-      /* geen opgeslagen spel */
+      /* geen (leesbaar) opgeslagen spel */
     }
+    setGeladen(true);
   }, []);
 
   useEffect(() => {
+    // pas opslaan na het laden, anders overschrijven we een save met de beginstand
+    if (!geladen) return;
     if (state.phase === "setup" && state.playerName === "") return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
-      /* opslaan mislukt */
+      /* opslaan mislukt (bijv. privémodus) */
     }
-  }, [state]);
+  }, [state, geladen]);
 
-  const value = useMemo(() => ({ state, dispatch }), [state]);
+  const value = useMemo(() => ({ state, dispatch, geladen }), [state, geladen]);
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }
 

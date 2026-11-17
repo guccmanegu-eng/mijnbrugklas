@@ -4,6 +4,7 @@ import { BigButton, Card, SectionTitle } from "@/components/game/bits";
 import { Quiz } from "@/components/game/Quiz";
 import { TEST_QUESTIONS } from "@/lib/game/data";
 import { useGame } from "@/lib/game/state";
+import { schud } from "@/lib/game/random";
 
 export const Route = createFileRoute("/spel/toets")({
   component: ToetsPagina,
@@ -12,7 +13,7 @@ export const Route = createFileRoute("/spel/toets")({
 function ToetsPagina() {
   const { state, dispatch } = useGame();
   const navigate = useNavigate();
-  const [vragen] = useState(() => [...TEST_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 12));
+  const [vragen] = useState(() => schud(TEST_QUESTIONS).slice(0, 12));
 
   if (state.testScore) {
     const { correct, totaal } = state.testScore;

@@ -59,6 +59,9 @@ export function LiveEventDialog() {
         "fixed inset-0 z-[60] flex items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-5",
         def.alarm && fase === "intro" ? "bg-rose/40" : "bg-ink/55",
       )}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Live event: ${def.titel}`}
     >
       <Card
         className={cn(

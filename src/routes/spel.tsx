@@ -20,7 +20,16 @@ export const Route = createFileRoute("/spel")({
 });
 
 function SpelLayout() {
-  const { state } = useGame();
+  const { state, geladen } = useGame();
+
+  // Wacht tot een opgeslagen spel is ingeladen, anders flitst "Maak eerst je profiel" voorbij.
+  if (!geladen) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-5" role="status" aria-live="polite">
+        <p className="animate-pulse text-sm font-semibold text-muted-foreground">🎒 Je rugzak wordt gepakt…</p>
+      </div>
+    );
+  }
 
   if (!state.playerName) {
     return (
@@ -56,16 +65,22 @@ function SituationDialog() {
   const optie = gekozen === null ? null : situatie.opties[gekozen];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/45 p-0 backdrop-blur-sm sm:items-center sm:p-5">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/45 p-0 backdrop-blur-sm sm:items-center sm:p-5"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="situatie-titel"
+    >
       <Card className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-b-none sm:rounded-3xl">
-        <p className="text-4xl">{situatie.icon}</p>
-        <h2 className="mt-2 text-xl font-bold">{situatie.titel}</h2>
+        <p className="text-4xl" aria-hidden="true">{situatie.icon}</p>
+        <h2 id="situatie-titel" className="mt-2 text-xl font-bold">{situatie.titel}</h2>
         <p className="mt-1 text-sm text-muted-foreground">{situatie.vraag}</p>
 
         <div className="mt-4 space-y-2.5">
           {situatie.opties.map((o, i) => (
             <button
               key={o.label}
+              type="button"
               disabled={gekozen !== null}
               onClick={() => setGekozen(i)}
               className={cn(
